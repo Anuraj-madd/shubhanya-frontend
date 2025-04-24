@@ -250,8 +250,8 @@ const Home = () => {
                     className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition"
                   >
                     Learn More
-                  </a> */}
-                </div>
+                  </a>
+                </div> */}
               </div>
             ))}
           </div>
