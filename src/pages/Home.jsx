@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
 import ReviewCard from '../components/ReviewCard';
@@ -11,6 +11,10 @@ const Home = () => {
     type: '' // 'success' or 'error'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // State for testimonial carousel
+  const [isPaused, setIsPaused] = useState(false);
+  const testimonialRef = useRef(null);
 
   // Handle newsletter form submission
   const handleSubscribe = async (e) => {
@@ -61,6 +65,68 @@ const Home = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Auto-scroll testimonials
+  useEffect(() => {
+    const scrollContainer = testimonialRef.current;
+    if (!scrollContainer) return;
+
+    let scrollInterval;
+    let scrollAmount = 1; // Pixels to scroll per interval
+    const totalWidth = scrollContainer.scrollWidth;
+    const visibleWidth = scrollContainer.clientWidth;
+
+    const startScrolling = () => {
+      scrollInterval = setInterval(() => {
+        if (isPaused) return;
+
+        // Reset scroll position when we reach the end
+        if (scrollContainer.scrollLeft + visibleWidth >= totalWidth) {
+          scrollContainer.scrollLeft = 0;
+        } else {
+          scrollContainer.scrollLeft += scrollAmount;
+        }
+      }, 30); // Adjust interval for smoother/slower scrolling
+    };
+
+    // Start scrolling after a brief delay
+    const timeoutId = setTimeout(startScrolling, 2000);
+
+    // Handle mouse interactions
+    const handleMouseEnter = () => setIsPaused(true);
+    const handleMouseLeave = () => setIsPaused(false);
+    const handleTouchStart = () => setIsPaused(true);
+    const handleTouchEnd = () => {
+      // Add a small delay before resuming to avoid immediate scrolling after touch
+      setTimeout(() => setIsPaused(false), 3000);
+    };
+
+    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
+    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
+    scrollContainer.addEventListener('touchstart', handleTouchStart);
+    scrollContainer.addEventListener('touchend', handleTouchEnd);
+    
+    // Wheel event to pause scrolling when user manually scrolls
+    scrollContainer.addEventListener('wheel', () => {
+      setIsPaused(true);
+      // Resume after user is done scrolling
+      clearTimeout(scrollContainer.wheelTimeout);
+      scrollContainer.wheelTimeout = setTimeout(() => setIsPaused(false), 3000);
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(scrollInterval);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
+        scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
+        scrollContainer.removeEventListener('touchstart', handleTouchStart);
+        scrollContainer.removeEventListener('touchend', handleTouchEnd);
+        scrollContainer.removeEventListener('wheel', () => {});
+        clearTimeout(scrollContainer.wheelTimeout);
+      }
+    };
+  }, [isPaused]);
 
   const benefitCards = [
     { 
@@ -159,6 +225,58 @@ const Home = () => {
       icon: "plug-wire",
       description: "Premium wiring solutions using trusted brands like Havells, Anchor, and D-Link",
       link: "/services#electrical"
+    }
+  ];
+
+  // Expanded testimonials
+  const testimonials = [
+    {
+      name: "Anuraj Maddhesiya", 
+      company: "ABC Security Solutions",
+      review: "Shubhanya provided us with a comprehensive CCTV setup for our corporate office. The quality and support have been exceptional.", 
+      rating: 5
+    },
+    {
+      name: "Ankit Soni", 
+      company: "CloudTech Systems",
+      review: "Their networking equipment has transformed our infrastructure. Fast delivery and excellent installation support.", 
+      rating: 5
+    },
+    {
+      name: "Aman Soni", 
+      company: "HomeSecure",
+      review: "We've been partnering with Shubhanya for our client installations. Reliable products and fantastic after-sales service.", 
+      rating: 4
+    },
+    {
+      name: "Rajesh Kumar",
+      company: "Green Energy Solutions",
+      review: "The solar power system installed by Shubhanya has reduced our energy costs by 40%. Professional installation and great ongoing maintenance.",
+      rating: 5
+    },
+    {
+      name: "Priya Sharma",
+      company: "TechHub Coworking",
+      review: "We rely on consistent internet connectivity for our business, and Shubhanya's static IP service has been rock-solid for over a year now.",
+      rating: 5
+    },
+    {
+      name: "Vikram Singh",
+      company: "Rural Connect Initiative",
+      review: "The network tower installation in our village has transformed connectivity for hundreds of families. Excellent work by the Shubhanya team.",
+      rating: 5
+    },
+    {
+      name: "Deepak Verma",
+      company: "Verma Electronics",
+      review: "As a retailer, I've been sourcing networking equipment from Shubhanya for years. Their product quality and business ethics are unmatched.",
+      rating: 4
+    },
+    {
+      name: "Meena Patel",
+      company: "Secure Homes Association",
+      review: "Our residential complex's security was completely upgraded with Shubhanya's IP surveillance system. The clarity and remote monitoring features are outstanding.",
+      rating: 5
     }
   ];
 
@@ -337,28 +455,116 @@ const Home = () => {
         </div>
       </section> */}
 
-      {/* Customer Reviews */}
-      <section className="py-20 px-4 max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">Customer Testimonials</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <ReviewCard 
-            name="Anuraj Maddhesiya" 
-            company="ABC Security Solutions"
-            review="Shubhanya provided us with a comprehensive CCTV setup for our corporate office. The quality and support have been exceptional." 
-            rating={5}
-          />
-          <ReviewCard 
-            name="Ankit Soni" 
-            company="CloudTech Systems"
-            review="Their networking equipment has transformed our infrastructure. Fast delivery and excellent installation support." 
-            rating={5}
-          />
-          <ReviewCard 
-            name="Aman Soni" 
-            company="HomeSecure"
-            review="We've been partnering with Shubhanya for our client installations. Reliable products and fantastic after-sales service." 
-            rating={4}
-          />
+      {/* Customer Reviews - Scrollable */}
+      <section className="py-20 px-4 max-w-7xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">Customer Testimonials</h2>
+        <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+          See what our clients across India have to say about our products and services
+        </p>
+        
+        {/* Carousel controls */}
+        <div className="flex justify-center mb-6">
+          <button 
+            onClick={() => {
+              if (testimonialRef.current) {
+                testimonialRef.current.scrollLeft -= 300;
+                setIsPaused(true);
+                setTimeout(() => setIsPaused(false), 3000);
+              }
+            }}
+            className="bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full flex items-center justify-center mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label="Scroll left"
+          >
+            <span className="text-lg">←</span>
+          </button>
+          <button 
+            onClick={() => {
+              if (testimonialRef.current) {
+                testimonialRef.current.scrollLeft += 300;
+                setIsPaused(true);
+                setTimeout(() => setIsPaused(false), 3000);
+              }
+            }}
+            className="bg-blue-600 hover:bg-blue-700 text-white w-10 h-10 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label="Scroll right"
+          >
+            <span className="text-lg">→</span>
+          </button>
+        </div>
+        
+        {/* Carousel container */}
+        <div 
+          className="relative max-w-full overflow-hidden"
+          style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}
+        >
+          <div 
+            ref={testimonialRef}
+            className="flex overflow-x-scroll pb-8 hide-scrollbar snap-x"
+            style={{ 
+              scrollBehavior: 'smooth',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
+            }}
+          >
+            {/* Gap at start for smooth looping */}
+            <div className="flex-shrink-0 w-4"></div>
+            
+            {testimonials.map((testimonial, index) => (
+              <div 
+                key={index} 
+                className="flex-shrink-0 w-80 px-4 snap-center"
+              >
+                <ReviewCard 
+                  name={testimonial.name} 
+                  company={testimonial.company}
+                  review={testimonial.review} 
+                  rating={testimonial.rating}
+                />
+              </div>
+            ))}
+            
+            {/* Repeat first few testimonials at end for seamless looping */}
+            {testimonials.slice(0, 3).map((testimonial, index) => (
+              <div 
+                key={`repeat-${index}`} 
+                className="flex-shrink-0 w-80 px-4 snap-center"
+              >
+                <ReviewCard 
+                  name={testimonial.name} 
+                  company={testimonial.company}
+                  review={testimonial.review} 
+                  rating={testimonial.rating}
+                />
+              </div>
+            ))}
+            
+            {/* Gap at end for smooth looping */}
+            <div className="flex-shrink-0 w-4"></div>
+          </div>
+          
+          {/* Shadow overlay for fade effect */}
+          <div className="absolute top-0 bottom-8 left-0 w-16 bg-gradient-to-r from-gray-50 to-transparent pointer-events-none"></div>
+          <div className="absolute top-0 bottom-8 right-0 w-16 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none"></div>
+        </div>
+        
+        {/* Indicator dots */}
+        <div className="flex justify-center mt-2 space-x-2">
+          {[0, 1, 2, 3].map((index) => (
+            <button
+              key={index}
+              className={`w-2 h-2 rounded-full focus:outline-none ${
+                index === 0 ? 'bg-blue-600' : 'bg-gray-300'
+              }`}
+              onClick={() => {
+                if (testimonialRef.current) {
+                  testimonialRef.current.scrollLeft = index * 320 * 2;
+                  setIsPaused(true);
+                  setTimeout(() => setIsPaused(false), 3000);
+                }
+              }}
+              aria-label={`Go to slide ${index + 1}`}
+            ></button>
+          ))}
         </div>
       </section>
 
@@ -405,6 +611,17 @@ const Home = () => {
           </p>
         </div>
       </section>
+
+      {/* Add custom CSS to hide scrollbar */}
+      <style jsx global>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
 
       {/* Footer */}
       <Footer />
