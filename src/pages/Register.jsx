@@ -169,7 +169,7 @@ const Register = () => {
                   onBlur={handleBlur}
                   required
                   className="w-full p-3 rounded-lg border border-[#778DA9] text-[#1B1B1B] focus:outline-none focus:ring-2 focus:ring-[#0D1B2A]"
-                  placeholder="John"
+                  placeholder="First Name"
                 />
                 {touched.firstName && errors.firstName && (
                   <div className="text-red-500 text-sm flex items-center mt-1">
@@ -193,7 +193,7 @@ const Register = () => {
                   onBlur={handleBlur}
                   required
                   className="w-full p-3 rounded-lg border border-[#778DA9] text-[#1B1B1B] focus:outline-none focus:ring-2 focus:ring-[#0D1B2A]"
-                  placeholder="Doe"
+                  placeholder="Last Name"
                 />
                 {touched.lastName && errors.lastName && (
                   <div className="text-red-500 text-sm flex items-center mt-1">
