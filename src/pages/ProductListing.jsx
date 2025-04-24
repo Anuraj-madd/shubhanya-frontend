@@ -73,6 +73,17 @@ const ProductListing = () => {
     }
   };
 
+  const getStockDisplay = (stock) => {
+    const stockNum = parseInt(stock);
+    if (stockNum === 0) {
+      return { text: "Out of Stock", className: "text-red-600" };
+    } else if (stockNum <= 5) {
+      return { text: `Only ${stockNum} left!`, className: "text-amber-600" };
+    } else {
+      return { text: "In Stock", className: "text-green-600" };
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -101,7 +112,7 @@ const ProductListing = () => {
             <p className="text-[#415A77] text-center mb-6">{error}</p>
             <button 
               onClick={() => window.location.reload()} 
-              className="w-full bg-[#415A77] text-white py-2 rounded hover:bg-[#1B263B] transition-colors"
+              className="w-full bg-[#415A77] text-white py-2 rounded-md hover:bg-[#1B263B] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#415A77] focus:ring-opacity-50"
             >
               Try Again
             </button>
@@ -120,14 +131,14 @@ const ProductListing = () => {
           <h1 className="text-2xl md:text-3xl font-bold text-[#0D1B2A] mb-6">Our Products</h1>
           
           {/* Utility Bar */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 mb-6 bg-white rounded shadow-md border border-[#778DA9]">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 mb-6 bg-white rounded-lg shadow-md border border-[#778DA9]/20">
             <div className="relative w-full md:w-1/3">
               <input
                 type="text"
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="border border-[#778DA9] p-2 pl-10 rounded-md w-full text-[#1B1B1B] focus:outline-none focus:ring-2 focus:ring-[#415A77]"
+                className="border border-[#778DA9]/30 p-2 pl-10 rounded-lg w-full text-[#1B1B1B] focus:outline-none focus:ring-2 focus:ring-[#415A77] focus:border-transparent"
               />
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -140,11 +151,11 @@ const ProductListing = () => {
               </svg>
             </div>
             
-            <div className="flex items-center gap-4 w-full md:w-auto">
+            <div className="flex items-center gap-4 w-full md:w-auto justify-between">
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
-                className="border border-[#778DA9] p-2 rounded-md text-[#1B1B1B] focus:outline-none focus:ring-2 focus:ring-[#415A77]"
+                className="border border-[#778DA9]/30 p-2 rounded-lg text-[#1B1B1B] focus:outline-none focus:ring-2 focus:ring-[#415A77] focus:border-transparent"
               >
                 <option value="">Sort by</option>
                 <option value="lowToHigh">Price: Low to High</option>
@@ -152,10 +163,10 @@ const ProductListing = () => {
                 <option value="newest">Newest First</option>
               </select>
               
-              <div className="flex gap-2 ml-auto">
+              <div className="flex items-center bg-[#E0E1DD] rounded-lg overflow-hidden">
                 <button
                   onClick={() => setView("grid")}
-                  className={`px-3 py-2 rounded-md font-medium transition-colors ${
+                  className={`p-2 transition-colors duration-300 ${
                     view === "grid"
                       ? "bg-[#415A77] text-white"
                       : "bg-[#E0E1DD] text-[#1B1B1B] hover:bg-[#D1D2D0]"
@@ -168,7 +179,7 @@ const ProductListing = () => {
                 </button>
                 <button
                   onClick={() => setView("list")}
-                  className={`px-3 py-2 rounded-md font-medium transition-colors ${
+                  className={`p-2 transition-colors duration-300 ${
                     view === "list"
                       ? "bg-[#415A77] text-white"
                       : "bg-[#E0E1DD] text-[#1B1B1B] hover:bg-[#D1D2D0]"
@@ -184,7 +195,7 @@ const ProductListing = () => {
           </div>
 
           {/* Product Count */}
-          <p className="text-[#415A77] mb-4">
+          <p className="text-[#415A77] mb-4 font-medium">
             Showing {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
           </p>
 
@@ -199,7 +210,7 @@ const ProductListing = () => {
               {searchQuery && (
                 <button 
                   onClick={() => setSearchQuery("")} 
-                  className="mt-4 text-[#415A77] underline hover:text-[#1B263B]"
+                  className="mt-4 px-4 py-2 bg-[#415A77] text-white rounded-md hover:bg-[#1B263B] transition-colors duration-300"
                 >
                   Clear search
                 </button>
@@ -219,22 +230,23 @@ const ProductListing = () => {
               const inCart = isInCart(product.id);
               const isOutOfStock = product.stock === "0";
               const discount = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+              const stockStatus = getStockDisplay(product.stock);
               
               return (
                 <div
                   key={product.id}
-                  className={`relative bg-white rounded-lg shadow-md border border-[#778DA9] overflow-hidden flex flex-col ${
+                  className={`relative bg-white rounded-lg shadow-md overflow-hidden flex flex-col ${
                     view === "list" ? "md:flex-row" : ""
-                  } hover:shadow-lg transition-shadow duration-300`}
+                  } hover:shadow-lg transition-all duration-300 group border border-gray-100`}
                 >
                   {isOutOfStock && (
                     <div className="absolute inset-0 bg-white bg-opacity-70 backdrop-blur-sm z-10 flex items-center justify-center">
-                      <span className="text-red-600 font-bold text-xl px-4 py-2 bg-white bg-opacity-80 rounded-md shadow">Out of Stock</span>
+                      <span className="text-red-600 font-bold text-lg px-4 py-2 bg-white bg-opacity-80 rounded-lg shadow">Out of Stock</span>
                     </div>
                   )}
 
                   {discount > 0 && (
-                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">
+                    <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
                       {discount}% OFF
                     </div>
                   )}
@@ -242,7 +254,7 @@ const ProductListing = () => {
                   <div
                     className={`${
                       view === "list" ? "w-40 h-40 md:w-48 md:h-48 flex-shrink-0" : "w-full h-[200px]"
-                    } flex items-center justify-center p-4 bg-white`}
+                    } flex items-center justify-center p-4 bg-white group-hover:scale-105 transition-transform duration-300`}
                   >
                     <img
                       src={
@@ -271,25 +283,32 @@ const ProductListing = () => {
                           <span className="line-through text-red-400 text-sm">₹{product.mrp}</span>
                         )}
                       </div>
-                      {product.stock && product.stock !== "0" && (
-                        <p className="text-xs text-green-600 mt-1">In Stock: {product.stock}</p>
-                      )}
+                      
+                      <div className={`text-xs font-medium mt-1 ${stockStatus.className}`}>
+                        {stockStatus.text}
+                      </div>
                     </div>
 
-                    <div className="mt-4 flex gap-2">
+                    <div className="mt-4 space-y-2">
                       <button
                         onClick={() => setExpandedProduct(product)}
-                        className="bg-[#1CC5DC] hover:bg-[#19B3C7] text-white font-medium px-3 py-2 rounded w-full transition-colors"
+                        className="bg-white border border-[#1CC5DC] text-[#1CC5DC] hover:bg-[#1CC5DC] hover:text-white font-medium px-3 py-2 rounded-lg w-full transition-colors duration-300 flex items-center justify-center gap-2"
                         disabled={isOutOfStock}
                       >
-                        View Details
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        Quick View
                       </button>
                       <button
                         onClick={() => handleProductAction(product, inCart)}
                         disabled={isOutOfStock}
-                        className={`px-4 py-2 w-full ${
-                          inCart ? "bg-green-600 hover:bg-green-700" : "bg-[#415A77] hover:bg-[#1B263B]"
-                        } text-white rounded transition-colors flex items-center justify-center gap-1`}
+                        className={`px-4 py-2 w-full rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-sm ${
+                          inCart 
+                            ? "bg-green-600 hover:bg-green-700 text-white" 
+                            : "bg-[#415A77] hover:bg-[#0D1B2A] text-white hover:shadow-md"
+                        }`}
                       >
                         {inCart ? (
                           <>
@@ -319,12 +338,12 @@ const ProductListing = () => {
         {expandedProduct && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 backdrop-blur-sm p-4" onClick={() => setExpandedProduct(null)}>
             <div 
-              className="bg-white max-w-2xl w-full p-6 rounded-lg relative border border-[#778DA9] max-h-[90vh] overflow-y-auto"
+              className="bg-white max-w-3xl w-full p-0 rounded-xl relative border border-[#778DA9]/20 max-h-[90vh] overflow-hidden shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setExpandedProduct(null)}
-                className="absolute top-4 right-4 text-gray-600 hover:text-black bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md"
+                className="absolute top-4 right-4 text-gray-600 hover:text-black bg-white/80 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center shadow-md z-10"
                 aria-label="Close"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -332,25 +351,32 @@ const ProductListing = () => {
                 </svg>
               </button>
               
-              <div className="md:flex gap-6">
-                <div className="md:w-1/2 mb-4 md:mb-0">
-                  <img
-                    src={
-                      expandedProduct.image.startsWith("http")
-                        ? expandedProduct.image
-                        : `https://shubhanya-backend.onrender.com/uploads/${expandedProduct.image}`
-                    }
-                    alt={expandedProduct.name}
-                    className="w-full h-64 object-contain mb-4 rounded"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "https://via.placeholder.com/300?text=No+Image";
-                    }}
-                  />
+              <div className="md:flex h-full">
+                <div className="md:w-1/2 bg-[#F5F7FA] p-6 flex items-center justify-center">
+                  <div className="relative w-full">
+                    {parseInt(expandedProduct.stock) === 0 && (
+                      <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 rounded-lg font-medium">
+                        Out of Stock
+                      </div>
+                    )}
+                    <img
+                      src={
+                        expandedProduct.image.startsWith("http")
+                          ? expandedProduct.image
+                          : `https://shubhanya-backend.onrender.com/uploads/${expandedProduct.image}`
+                      }
+                      alt={expandedProduct.name}
+                      className="w-full h-64 object-contain"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://via.placeholder.com/300?text=No+Image";
+                      }}
+                    />
+                  </div>
                 </div>
                 
-                <div className="md:w-1/2">
-                  <h2 className="text-2xl font-bold text-[#0D1B2A] mb-2">
+                <div className="md:w-1/2 p-6 overflow-y-auto max-h-[70vh] md:max-h-[90vh]">
+                  <h2 className="text-2xl font-bold text-[#0D1B2A] mb-3">
                     {expandedProduct.name}
                   </h2>
                   
@@ -359,66 +385,89 @@ const ProductListing = () => {
                     {expandedProduct.mrp > expandedProduct.price && (
                       <>
                         <span className="line-through text-red-400 text-lg mr-2">₹{expandedProduct.mrp}</span>
-                        <span className="bg-red-100 text-red-600 text-xs px-2 py-1 rounded">
+                        <span className="bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">
                           {Math.round(((expandedProduct.mrp - expandedProduct.price) / expandedProduct.mrp) * 100)}% OFF
                         </span>
                       </>
                     )}
                   </div>
                   
-                  <div className="mb-4 text-[#415A77]">
-                    <p className="mb-4">{expandedProduct.description}</p>
+                  <div className="mb-6 text-[#415A77]">
+                    <div className="prose prose-sm max-w-none">
+                      <p className="mb-4">{expandedProduct.description}</p>
+                    </div>
                     
                     {expandedProduct.stock && (
-                      <p className={`${
-                        expandedProduct.stock === "0" 
-                          ? "text-red-600" 
-                          : "text-green-600"
-                      } font-medium`}>
-                        {expandedProduct.stock === "0" ? "Out of Stock" : `In Stock: ${expandedProduct.stock}`}
-                      </p>
+                      <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mt-2 ${
+                        getStockDisplay(expandedProduct.stock).className === "text-green-600" 
+                          ? "bg-green-100" 
+                          : getStockDisplay(expandedProduct.stock).className === "text-amber-600"
+                            ? "bg-amber-100"
+                            : "bg-red-100"
+                      }`}>
+                        <span className={getStockDisplay(expandedProduct.stock).className}>
+                          {getStockDisplay(expandedProduct.stock).text}
+                        </span>
+                      </div>
                     )}
                   </div>
                   
                   {expandedProduct.category && (
-                    <div className="mb-4">
-                      <span className="bg-[#E0E1DD] text-[#415A77] text-xs px-2 py-1 rounded">
+                    <div className="mb-6">
+                      <h4 className="text-sm text-[#778DA9] mb-1">Category</h4>
+                      <span className="bg-[#E0E1DD] text-[#415A77] text-xs px-3 py-1 rounded-full">
                         {expandedProduct.category}
                       </span>
                     </div>
                   )}
                   
-                  <button
-                    onClick={() => {
-                      const inCart = isInCart(expandedProduct.id);
-                      handleProductAction(expandedProduct, inCart);
-                      if (!inCart && isLoggedIn) {
-                        setExpandedProduct(null);
-                      }
-                    }}
-                    disabled={expandedProduct.stock === "0"}
-                    className={`mt-4 px-6 py-3 w-full ${
-                      isInCart(expandedProduct.id) 
-                        ? "bg-green-600 hover:bg-green-700" 
-                        : "bg-[#415A77] hover:bg-[#1B263B]"
-                    } text-white rounded transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed`}
-                  >
-                    {isInCart(expandedProduct.id) ? (
-                      <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        View in Cart
-                      </>
-                    ) : (
-                      <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                        Add to Cart
-                      </>
-                    )}
-                  </button>
+                  {expandedProduct.brand && (
+                    <div className="mb-6">
+                      <h4 className="text-sm text-[#778DA9] mb-1">Brand</h4>
+                      <span className="font-medium text-[#1B263B]">{expandedProduct.brand}</span>
+                    </div>
+                  )}
+                  
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => {
+                        const inCart = isInCart(expandedProduct.id);
+                        handleProductAction(expandedProduct, inCart);
+                        if (!inCart && isLoggedIn) {
+                          setExpandedProduct(null);
+                        }
+                      }}
+                      disabled={expandedProduct.stock === "0"}
+                      className={`w-full py-3 px-6 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
+                        isInCart(expandedProduct.id) 
+                          ? "bg-green-600 hover:bg-green-700 text-white" 
+                          : "bg-[#415A77] hover:bg-[#0D1B2A] text-white"
+                      } shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed`}
+                    >
+                      {isInCart(expandedProduct.id) ? (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          View in Cart
+                        </>
+                      ) : (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                          </svg>
+                          Add to Cart
+                        </>
+                      )}
+                    </button>
+                    
+                    <button
+                      onClick={() => setExpandedProduct(null)}
+                      className="w-full py-3 px-6 rounded-lg font-medium transition-colors duration-300 border border-[#778DA9]/30 text-[#415A77] hover:bg-[#F5F7FA] flex items-center justify-center"
+                    >
+                      Continue Shopping
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
