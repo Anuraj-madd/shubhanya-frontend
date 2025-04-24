@@ -57,7 +57,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="text-center text-sm border-t border-[#44576D] pt-4">
+      <div className="text-center text-sm border-t border-[#44576D] pt-2">
         &copy; {new Date().getFullYear()} Designed with ❤️ by Anuraj Maddhesiya. All rights reserved.
       </div>
     </footer>
