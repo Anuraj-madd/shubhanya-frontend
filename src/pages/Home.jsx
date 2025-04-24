@@ -243,37 +243,37 @@ const Home = () => {
       rating: 5
     },
     {
-      name: "Aman Soni", 
+      name: "Alankriti Khandelwal", 
       company: "HomeSecure",
       review: "We've been partnering with Shubhanya for our client installations. Reliable products and fantastic after-sales service.", 
       rating: 4
     },
     {
-      name: "Rajesh Kumar",
+      name: "Aman Soni",
       company: "Green Energy Solutions",
       review: "The solar power system installed by Shubhanya has reduced our energy costs by 40%. Professional installation and great ongoing maintenance.",
       rating: 5
     },
     {
-      name: "Priya Sharma",
+      name: "CA Ritika Agarwal",
       company: "TechHub Coworking",
       review: "We rely on consistent internet connectivity for our business, and Shubhanya's static IP service has been rock-solid for over a year now.",
       rating: 5
     },
     {
-      name: "Vikram Singh",
+      name: "Khushi Agrwal",
       company: "Rural Connect Initiative",
       review: "The network tower installation in our village has transformed connectivity for hundreds of families. Excellent work by the Shubhanya team.",
       rating: 5
     },
     {
-      name: "Deepak Verma",
+      name: "Shaurya Lath",
       company: "Verma Electronics",
       review: "As a retailer, I've been sourcing networking equipment from Shubhanya for years. Their product quality and business ethics are unmatched.",
       rating: 4
     },
     {
-      name: "Meena Patel",
+      name: "Amar Gupta",
       company: "Secure Homes Association",
       review: "Our residential complex's security was completely upgraded with Shubhanya's IP surveillance system. The clarity and remote monitoring features are outstanding.",
       rating: 5
