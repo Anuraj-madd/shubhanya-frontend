@@ -244,13 +244,13 @@ const Home = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-3 text-center">{service.title}</h3>
                 <p className="text-blue-100 text-center mb-6">{service.description}</p>
-                <div className="text-center">
+{/*                 <div className="text-center">
                   <a 
                     href={service.link} 
                     className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition"
                   >
                     Learn More
-                  </a>
+                  </a> */}
                 </div>
               </div>
             ))}
@@ -258,7 +258,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Popular Categories */}
+{/*       {/* Popular Categories */}
       <section className="py-16 px-4 bg-gray-100">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Popular Categories</h2>
@@ -279,7 +279,7 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Internet Solutions Partners */}
       <section className="py-20 px-4 max-w-7xl mx-auto">
