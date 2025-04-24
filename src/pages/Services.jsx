@@ -25,6 +25,11 @@ const Services = () => {
           name: 'Network Monitoring & Maintenance',
           description: '24/7 monitoring and proactive maintenance of your network infrastructure',
           features: ['Real-time performance monitoring', 'Issue detection & resolution', 'Regular security updates', 'Network health reports']
+        },
+        {
+          name: 'Network Tower Installation',
+          description: 'Custom network tower installation for enhanced connectivity in rural and urban areas',
+          features: ['Site assessment & planning', 'Tower structure setup', 'Equipment mounting', 'Signal optimization', 'Regulatory compliance']
         }
       ]
     },
@@ -71,6 +76,57 @@ const Services = () => {
           name: 'ISP Partnerships',
           description: 'Internet services through our partnerships with Airtel, Ralwire, and Netsathi Networks',
           features: ['Competitive pricing', 'Bundle offers', 'Single point of contact', 'Simplified billing']
+        },
+        {
+          name: 'Static IP Services All Over India',
+          description: 'Reliable static IP services across India in partnership with Netsathi Networks PVT LTD',
+          features: ['Enterprise-grade static IPs', 'Multiple IP blocks available', 'Consistent connectivity', 'Technical implementation support', 'Business continuity solutions']
+        }
+      ]
+    },
+    {
+      id: 'solar',
+      title: 'Solar Power Solutions',
+      icon: 'sun',
+      description: 'Renewable energy systems for homes and businesses with complete installation services',
+      services: [
+        {
+          name: 'Residential Solar Systems',
+          description: 'Custom solar power solutions designed for homes and small businesses',
+          features: ['Energy requirement assessment', 'System design & sizing', 'High-efficiency solar panels', 'Inverter installation', 'Battery backup options']
+        },
+        {
+          name: 'Commercial Solar Installations',
+          description: 'Large-scale solar power systems for commercial buildings and industrial facilities',
+          features: ['ROI analysis & planning', 'Rooftop/ground mount options', 'Grid-tie systems', 'Power distribution setup', 'Performance monitoring']
+        },
+        {
+          name: 'Solar Maintenance & Support',
+          description: 'Ongoing maintenance and technical support for solar power systems',
+          features: ['Regular system inspections', 'Panel cleaning services', 'Efficiency monitoring', 'Component replacement', 'System upgrades']
+        }
+      ]
+    },
+    {
+      id: 'electrical',
+      title: 'Electrical & Network Wiring',
+      icon: 'plug-wire',
+      description: 'Premium wiring solutions using trusted brands like Havells, Anchor, and D-Link',
+      services: [
+        {
+          name: 'Commercial Electrical Wiring',
+          description: 'Complete electrical wiring services for offices, retail spaces, and industrial facilities',
+          features: ['Custom wiring diagrams', 'High-quality cable installation', 'Circuit breaker setup', 'Safety compliance', 'Load balancing']
+        },
+        {
+          name: 'Structured Network Cabling',
+          description: 'Professional network cabling and infrastructure installation',
+          features: ['Cat6/Cat6A/Fiber optic cabling', 'Patch panel setup', 'Cable management systems', 'Testing & certification', 'Documentation']
+        },
+        {
+          name: 'Electrical Maintenance',
+          description: 'Preventive maintenance and troubleshooting for electrical systems',
+          features: ['Safety inspections', 'Preventive maintenance', 'Emergency repairs', 'System upgrades', 'Compliance checks']
         }
       ]
     },
@@ -145,6 +201,34 @@ const Services = () => {
     { name: 'Warehouses & Logistics', icon: 'truck' }
   ];
 
+  // Featured services section - showcase the expanded services from home page
+  const featuredServices = [
+    {
+      title: "Solar Power Solutions",
+      icon: "sun",
+      description: "Renewable energy systems that reduce electricity costs by up to 40% while providing a sustainable power source for your home or business. Our complete solutions include system design, installation, and maintenance.",
+      link: "#solar"
+    },
+    {
+      title: "Static IP All Over India",
+      icon: "globe-network",
+      description: "Enterprise-grade static IP services available nationwide through our partnership with Netsathi Networks PVT LTD. Ideal for businesses requiring consistent connectivity, remote access systems, and hosting applications.",
+      link: "#internet"
+    },
+    {
+      title: "Network Tower Installation",
+      icon: "tower",
+      description: "Custom network tower solutions that enhance connectivity in challenging environments. We handle everything from site assessment and regulatory compliance to construction and equipment mounting.",
+      link: "#networking"
+    },
+    {
+      title: "Electrical & Network Wiring",
+      icon: "plug-wire",
+      description: "Professional wiring services using premium brands like Havells, Anchor, and D-Link. Our certified technicians ensure safe, reliable, and future-proof electrical and network infrastructure.",
+      link: "#electrical"
+    }
+  ];
+
   return (
     <div className="bg-gray-50 text-gray-800">
       {/* Navbar */}
@@ -180,6 +264,38 @@ const Services = () => {
         </div>
       </section>
 
+      {/* Featured Services Highlight */}
+      <section className="py-16 px-4 bg-gradient-to-r from-blue-800 to-blue-900 text-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Featured Services</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {featuredServices.map((service, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-sm p-6 rounded-lg hover:bg-white/20 transition">
+                <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto">
+                  <span className="text-white text-2xl">
+                    {/* Icon placeholder */}
+                    {service.icon === "sun" && "☀️"}
+                    {service.icon === "globe-network" && "🌐"}
+                    {service.icon === "tower" && "📡"}
+                    {service.icon === "plug-wire" && "🔌"}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-center">{service.title}</h3>
+                <p className="text-blue-100 text-center mb-6">{service.description}</p>
+                <div className="text-center">
+                  <a 
+                    href={service.link} 
+                    className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Service Categories */}
       {serviceCategories.map((category, index) => (
         <section 
@@ -196,6 +312,8 @@ const Services = () => {
                   {category.icon === "camera" && "📹"}
                   {category.icon === "globe" && "🌍"}
                   {category.icon === "clipboard" && "📋"}
+                  {category.icon === "sun" && "☀️"}
+                  {category.icon === "plug-wire" && "🔌"}
                 </span>
               </div>
               <div>
@@ -318,11 +436,19 @@ const Services = () => {
               },
               {
                 question: "What brands do you work with?",
-                answer: "We work with leading brands in the industry including Cisco, Hikvision, Dahua, TP-Link, D-Link, Ubiquiti, and many more. We recommend products based on your specific requirements and budget."
+                answer: "We work with leading brands in the industry including Cisco, Hikvision, Dahua, TP-Link, D-Link, Ubiquiti, Havells, Anchor and many more. We recommend products based on your specific requirements and budget."
               },
               {
                 question: "How quickly can you respond to service requests?",
                 answer: "For our contract customers, we offer response times as quick as 4 hours for critical issues. Standard service requests are typically addressed within 24 hours depending on location and complexity."
+              },
+              {
+                question: "Do you provide static IP services outside of Uttar Pradesh?",
+                answer: "Yes, through our partnership with Netsathi Networks PVT LTD, we can provide static IP services all across India for businesses requiring consistent IP addressing for their operations."
+              },
+              {
+                question: "What types of solar power systems do you install?",
+                answer: "We install both grid-tie and off-grid solar power systems for residential and commercial applications. Our solutions range from small home installations to large commercial setups depending on your energy requirements."
               }
             ].map((faq, index) => (
               <div key={index} className="bg-white rounded-lg shadow p-6">
@@ -333,20 +459,6 @@ const Services = () => {
           </div>
         </div>
       </section>
-
-      {/* Certifications */}
-      {/* <section className="py-16 px-4 bg-gray-100">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-12 text-blue-800">Our Certifications & Partnerships</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-white h-24 rounded-md shadow flex items-center justify-center p-6">
-                <div className="bg-gray-200 h-12 w-full rounded"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* Footer */}
       <Footer />
