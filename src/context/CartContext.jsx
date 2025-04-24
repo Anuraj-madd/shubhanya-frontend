@@ -8,11 +8,15 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [userId, setUserId] = useState(null);
   const [cartLoaded, setCartLoaded] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser?.id) {
       setUserId(storedUser.id);
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
   }, []);
 
@@ -57,6 +61,12 @@ export const CartProvider = ({ children }) => {
   }, [fetchCart, userId]);
 
   const addToCart = async (product) => {
+    if (!isLoggedIn) {
+      // Store current location to return after login
+      sessionStorage.setItem('returnUrl', window.location.pathname);
+      return false; // Return false to indicate login required
+    }
+    
     try {
       console.log("Adding product to cart:", product);
       
@@ -92,12 +102,15 @@ export const CartProvider = ({ children }) => {
       
       if (response.data.status === "success") {
         fetchCart(); // Refresh cart after adding
+        return true; // Return true to indicate success
       } else {
         console.error("Failed to add to cart:", response.data.message);
+        return false;
       }
     } catch (err) {
       console.error("Error adding to cart:", err);
       console.error("Error details:", err.response?.data || err.message);
+      return false;
     }
   };
 
@@ -176,7 +189,8 @@ export const CartProvider = ({ children }) => {
         updateQuantity, 
         removeFromCart,
         fetchCart,
-        cartLoaded 
+        cartLoaded,
+        isLoggedIn
       }}
     >
       {children}
