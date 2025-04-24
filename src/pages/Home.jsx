@@ -111,6 +111,54 @@ const Home = () => {
       name: "Broadband Solutions",
       image: "/assets/categories/broadband.webp",
       description: "High-speed internet connectivity solutions" 
+    },
+    { 
+      name: "Solar Power Systems",
+      image: "/assets/categories/solar.webp",
+      description: "Sustainable energy solutions for homes and businesses" 
+    },
+    { 
+      name: "Electrical & Network Wiring",
+      image: "/assets/categories/wiring.webp",
+      description: "Professional wiring services with premium brand materials" 
+    },
+    { 
+      name: "Network Tower Installation",
+      image: "/assets/categories/tower.webp",
+      description: "Custom tower solutions for enhanced connectivity" 
+    },
+    { 
+      name: "Static IP Services",
+      image: "/assets/categories/static-ip.webp",
+      description: "All-India static IP solutions for business requirements" 
+    }
+  ];
+
+  // New highlighted services
+  const highlightedServices = [
+    {
+      title: "Solar Power Solutions",
+      icon: "sun",
+      description: "Renewable energy systems for homes and businesses with complete installation services",
+      link: "/services#solar"
+    },
+    {
+      title: "Static IP All Over India",
+      icon: "globe-network",
+      description: "Reliable static IP services across India in partnership with Netsathi Networks PVT LTD",
+      link: "/services#internet"
+    },
+    {
+      title: "Network Tower Installation",
+      icon: "tower",
+      description: "Custom network tower installation for enhanced connectivity in rural and urban areas",
+      link: "/services#networking"
+    },
+    {
+      title: "Electrical & Network Wiring",
+      icon: "plug-wire",
+      description: "Premium wiring solutions using trusted brands like Havells, Anchor, and D-Link",
+      link: "/services#electrical"
     }
   ];
 
@@ -130,7 +178,7 @@ const Home = () => {
         <div className="relative h-full max-w-7xl mx-auto px-4 flex flex-col justify-center items-start">
           <div className="max-w-xl">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">Secure Your World</h1>
-            <p className="text-xl text-white mb-8">Premium networking and surveillance solutions from Shubhanya Enterprises</p>
+            <p className="text-xl text-white mb-8">Premium networking, surveillance, and sustainable energy solutions from Shubhanya Enterprises</p>
             <div className="flex flex-wrap gap-4">
               <a
                 href="/products"
@@ -154,7 +202,7 @@ const Home = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Shubhanya</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            With over 10 years of expertise in networking and surveillance solutions, 
+            With over 10 years of expertise in networking, surveillance, solar power, and infrastructure solutions, 
             we provide end-to-end services for businesses and homes across India.
           </p>
         </div>
@@ -178,12 +226,44 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Highlighted Services */}
+      <section className="py-16 px-4 bg-gradient-to-r from-blue-800 to-blue-900 text-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Our Expanded Services</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {highlightedServices.map((service, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-sm p-6 rounded-lg hover:bg-white/20 transition">
+                <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto">
+                  <span className="text-white text-2xl">
+                    {/* Icon placeholder */}
+                    {service.icon === "sun" && "☀️"}
+                    {service.icon === "globe-network" && "🌐"}
+                    {service.icon === "tower" && "📡"}
+                    {service.icon === "plug-wire" && "🔌"}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-center">{service.title}</h3>
+                <p className="text-blue-100 text-center mb-6">{service.description}</p>
+                <div className="text-center">
+                  <a 
+                    href={service.link} 
+                    className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Popular Categories */}
-      {/* <section className="py-16 px-4 bg-gray-100">
+      <section className="py-16 px-4 bg-gray-100">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Popular Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {popularCategories.map((category, index) => (
+            {popularCategories.slice(0, 4).map((category, index) => (
               <div key={index} className="group cursor-pointer">
                 <div className="relative h-64 overflow-hidden rounded-lg mb-4">
                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70 z-10"></div>
@@ -199,14 +279,14 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* Internet Solutions Partners */}
       <section className="py-20 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Internet Solutions Partners</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Shubhanya Enterprises provides premium internet and broadband services 
+            Shubhanya Enterprises provides premium internet, static IP, and broadband services 
             in partnership with India's leading network providers.
           </p>
         </div>
@@ -223,39 +303,40 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-semibold mb-2">{partner.name}</h3>
               <p className="text-gray-600">
-              Top-tier broadband services tailored for homes and businesses.
+                {partner.name === "Netsathi Networks" 
+                  ? "Premium broadband and Static IP services across India for business requirements." 
+                  : "Top-tier broadband services tailored for homes and businesses."}
               </p>
-              {/* <a 
-                href={`/partners/${partner.name.toLowerCase()}`}
-                className="inline-block mt-4 text-blue-600 font-medium hover:text-blue-800"
-              >
-                Learn more →
-              </a> */}
             </div>
           ))}
         </div>
       </section>
 
-      {/* Promotional Banner */}
-      {/* <section className="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-16 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
-          <div className="mb-8 md:mb-0 text-center md:text-left">
-            <h2 className="text-3xl font-bold mb-2">Limited Time Offer</h2>
-            <p className="text-xl mb-0">30% OFF on all IP Surveillance Systems</p>
+      {/* Brand Partners for Electrical & Networking */}
+      <section className="py-16 px-4 bg-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Quality Brand Partners</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              We work exclusively with industry-leading brands to ensure the highest quality for our electrical and networking solutions.
+            </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="bg-white text-blue-800 px-6 py-3 rounded-md font-semibold text-center">
-              Offer ends in: 5 days
-            </div>
-            <a
-              href="/products/ip-surveillance"
-              className="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold px-8 py-3 rounded-md transition shadow-md text-center"
-            >
-              Shop Now
-            </a>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {["Havells", "Anchor", "D-Link", "TP-Link"].map((brand, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow text-center">
+                <div className="h-16 flex items-center justify-center mb-4">
+                  {/* Placeholder for brand logos */}
+                  <div className="text-2xl font-bold text-blue-700">{brand}</div>
+                </div>
+                <p className="text-gray-600 text-sm">
+                  Trusted partner for {index < 2 ? "electrical components" : "networking solutions"}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* Customer Reviews */}
       <section className="py-20 px-4 max-w-6xl mx-auto">
@@ -280,14 +361,6 @@ const Home = () => {
             rating={4}
           />
         </div>
-        {/* <div className="text-center mt-12">
-          <a 
-            href="/testimonials" 
-            className="text-blue-600 font-medium hover:text-blue-800"
-          >
-            View all testimonials →
-          </a>
-        </div> */}
       </section>
 
       {/* Newsletter Signup */}
