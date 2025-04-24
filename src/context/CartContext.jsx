@@ -27,7 +27,7 @@ export const CartProvider = ({ children }) => {
 
       axios
         .post(
-          "http://192.168.29.101:3000/cart.php",
+          "https://shubhanya-backend.onrender.com/cart.php",
           dataToSend,
           {
             headers: {
@@ -79,7 +79,7 @@ export const CartProvider = ({ children }) => {
       console.log("Request Data for addToCart:", dataToSend);
 
       const response = await axios.post(
-        "http://192.168.29.101:3000/cart.php",
+        "https://shubhanya-backend.onrender.com/cart.php",
         dataToSend,
         {
           headers: {
@@ -113,7 +113,7 @@ export const CartProvider = ({ children }) => {
       console.log("Request Data for updateQuantity:", dataToSend);
 
       const response = await axios.post(
-        "http://192.168.29.101:3000/cart.php",
+        "https://shubhanya-backend.onrender.com/cart.php",
         dataToSend,
         {
           headers: {
@@ -146,7 +146,7 @@ export const CartProvider = ({ children }) => {
       console.log("Request Data for removeFromCart:", dataToSend);
 
       const response = await axios.post(
-        "http://192.168.29.101:3000/cart.php",
+        "https://shubhanya-backend.onrender.com/cart.php",
         dataToSend,
         {
           headers: {
