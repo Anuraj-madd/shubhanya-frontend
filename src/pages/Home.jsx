@@ -313,7 +313,7 @@ const Home = () => {
       </section>
 
       {/* Brand Partners for Electrical & Networking */}
-      <section className="py-16 px-4 bg-gray-100">
+{/*       <section className="py-16 px-4 bg-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Quality Brand Partners</h2>
@@ -326,7 +326,6 @@ const Home = () => {
             {["Havells", "Anchor", "D-Link", "TP-Link"].map((brand, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow text-center">
                 <div className="h-16 flex items-center justify-center mb-4">
-                  {/* Placeholder for brand logos */}
                   <div className="text-2xl font-bold text-blue-700">{brand}</div>
                 </div>
                 <p className="text-gray-600 text-sm">
@@ -336,7 +335,7 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Customer Reviews */}
       <section className="py-20 px-4 max-w-6xl mx-auto">
