@@ -398,9 +398,6 @@ const About = () => {
               <span className="font-medium text-brand-primary">Siddharthnagar</span>
             </div>
             <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
-              <span className="font-medium text-brand-primary">Deoria</span>
-            </div>
-            <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
               <span className="font-medium text-brand-primary">Gorakhpur</span>
             </div>
             <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
