@@ -369,8 +369,12 @@ const About = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {partners.map((partner, index) => (
                 <div key={index} className="text-center p-4">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="text-brand-secondary font-bold text-xl">{partner.name.charAt(0)}</span>
+                  <div className="h-16 mx-auto mb-3 flex items-center justify-center">
+                    <img 
+                      src={`/images/partners/${partner.name.toLowerCase().replace(/\s+/g, '-')}.png`} 
+                      alt={`${partner.name} logo`}
+                      className="max-h-full max-w-full object-contain"
+                    />
                   </div>
                   <h3 className="font-semibold text-brand-primary">{partner.name}</h3>
                   <p className="text-sm text-brand-accent1">{partner.role}</p>
