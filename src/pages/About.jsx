@@ -371,7 +371,7 @@ const About = () => {
                 <div key={index} className="text-center p-4">
                   <div className="h-16 mx-auto mb-3 flex items-center justify-center">
                     <img 
-                      src={`/images/partners/${partner.name.toLowerCase().replace(/\s+/g, '-')}.png`} 
+                      src={`/assets/images/partners/${partner.name.toLowerCase().replace(/\s+/g, '-')}.png`} 
                       alt={`${partner.name} logo`}
                       className="max-h-full max-w-full object-contain"
                     />
