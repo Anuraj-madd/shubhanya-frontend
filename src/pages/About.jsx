@@ -41,7 +41,7 @@ const About = () => {
   const partners = [
     { name: "Netsathi Networks PVT LTD", role: "Internet Services" },
     { name: "Railwire", role: "Broadband Provider" },
-    { name: "Airtel", role: "Telecom Partner" },
+    { name: "Airtel", role: "Broadband Provider" },
     { name: "Havells", role: "Electrical Solutions" },
     { name: "D-Link", role: "Networking Equipment" },
     { name: "Hikvision", role: "Surveillance Systems" }
@@ -62,7 +62,7 @@ const About = () => {
           <h1 className="text-5xl font-bold text-white mb-6">About Shubhanya Enterprises</h1>
           <p className="text-xl text-blue-100 max-w-2xl">
             Your trusted partner for end-to-end technology solutions in networking, surveillance, internet services, 
-            and renewable energy systems since 2015.
+            and renewable energy systems.
           </p>
         </div>
       </div>
