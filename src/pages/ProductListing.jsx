@@ -9,15 +9,12 @@ const ProductListing = () => {
   const [products, setProducts] = useState([]);
   const [expandedProduct, setExpandedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [view, setView] = useState("grid"); // Changed default to grid
+  const [view, setView] = useState("grid"); // Default grid view for all devices
   const [sortOption, setSortOption] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { cartItems, addToCart, cartLoaded, isLoggedIn } = useCart();
   const navigate = useNavigate();
-
-  // Remove the useEffect that sets the view based on window size
-  // This was previously changing the view to list on mobile devices
   
   useEffect(() => {
     const fetchProducts = async () => {
@@ -233,9 +230,10 @@ const ProductListing = () => {
                     view === "list" ? "md:flex-row" : ""
                   } hover:shadow-lg transition-all duration-300 group border border-gray-100`}
                 >
+                  {/* Modified Out of Stock overlay - reduced blur and opacity for better visibility */}
                   {isOutOfStock && (
-                    <div className="absolute inset-0 bg-white bg-opacity-70 backdrop-blur-sm z-10 flex items-center justify-center">
-                      <span className="text-red-600 font-bold text-lg px-4 py-2 bg-white bg-opacity-80 rounded-lg shadow">Out of Stock</span>
+                    <div className="absolute inset-0 bg-white bg-opacity-40 backdrop-blur-[2px] z-10 flex items-center justify-center">
+                      <div className="bg-red-600 text-white font-bold text-lg px-4 py-2 rounded-lg shadow">Out of Stock</div>
                     </div>
                   )}
 
