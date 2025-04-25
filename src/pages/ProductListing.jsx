@@ -9,22 +9,16 @@ const ProductListing = () => {
   const [products, setProducts] = useState([]);
   const [expandedProduct, setExpandedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [view, setView] = useState("grid");
+  const [view, setView] = useState("grid"); // Changed default to grid
   const [sortOption, setSortOption] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { cartItems, addToCart, cartLoaded, isLoggedIn } = useCart();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const updateView = () => {
-      setView(window.innerWidth < 768 ? "list" : "grid");
-    };
-    updateView();
-    window.addEventListener("resize", updateView);
-    return () => window.removeEventListener("resize", updateView);
-  }, []);
-
+  // Remove the useEffect that sets the view based on window size
+  // This was previously changing the view to list on mobile devices
+  
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
