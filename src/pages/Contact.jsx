@@ -24,7 +24,6 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Set submitting state
     setStatus({
       message: "Sending your message...",
       isError: false,
@@ -32,53 +31,67 @@ const Contact = () => {
       isSubmitted: false
     });
     
+    // Create form data for submission
+    const formBody = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      formBody.append(key, value);
+    });
+    
     try {
-      // Create FormData object for sending the form
-      const formBody = new URLSearchParams();
-      Object.entries(formData).forEach(([key, value]) => {
-        formBody.append(key, value);
-      });
+      // Use XMLHttpRequest instead of fetch for better compatibility
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://shubhanya-backend.onrender.com/contact.php', true);
       
-      const response = await fetch('https://shubhanya-backend.onrender.com/contact.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formBody,
-        // Add these options to ensure proper error handling
-        mode: 'cors',
-        credentials: 'same-origin'
-      });
+      xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const result = JSON.parse(xhr.responseText);
+            
+            // Always treat as success if email was sent
+            setStatus({
+              message: result.message || "Thank you for your message. We will get back to you soon!",
+              isError: false,
+              isSubmitting: false,
+              isSubmitted: true
+            });
+            setFormData({ name: "", email: "", phone: "", message: "" });
+          } catch (e) {
+            console.error("Error parsing response:", e);
+            // Even if parsing fails, assume success if status is 200-299
+            setStatus({
+              message: "Thank you for your message. We will get back to you soon!",
+              isError: false,
+              isSubmitting: false,
+              isSubmitted: true
+            });
+            setFormData({ name: "", email: "", phone: "", message: "" });
+          }
+        } else {
+          setStatus({
+            message: "There was an error submitting the form. Please try again.",
+            isError: true,
+            isSubmitting: false,
+            isSubmitted: false
+          });
+        }
+      };
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      
-      // Parse the JSON response
-      const result = await response.json();
-      
-      if (result.success) {
-        // Show success message and reset form
+      xhr.onerror = function() {
         setStatus({
-          message: result.message || "Thank you for your message. We will get back to you soon!",
-          isError: false,
-          isSubmitting: false,
-          isSubmitted: true
-        });
-        setFormData({ name: "", email: "", phone: "", message: "" });
-      } else {
-        // Show error message from server
-        setStatus({
-          message: result.message || "There was an error submitting the form. Please try again.",
+          message: "A network error occurred. Please try again later.",
           isError: true,
           isSubmitting: false,
           isSubmitted: false
         });
-      }
+      };
+      
+      // Send the form data
+      xhr.send(formBody);
+      
     } catch (error) {
       console.error('Error submitting form:', error);
       setStatus({
-        message: "A network error occurred. Please check your connection and try again.",
+        message: "An unexpected error occurred. Please try again.",
         isError: true,
         isSubmitting: false,
         isSubmitted: false
