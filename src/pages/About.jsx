@@ -392,16 +392,25 @@ const About = () => {
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
-              <span className="font-medium text-brand-primary">Gorakhpur</span>
+              <span className="font-medium text-brand-primary">Maharajganj</span>
             </div>
             <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
-              <span className="font-medium text-brand-primary">Maharajganj</span>
+              <span className="font-medium text-brand-primary">Siddharthnagar</span>
             </div>
             <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
               <span className="font-medium text-brand-primary">Deoria</span>
             </div>
             <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
-              <span className="font-medium text-brand-primary">Siddharthnagar</span>
+              <span className="font-medium text-brand-primary">Gorakhpur</span>
+            </div>
+            <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
+              <span className="font-medium text-brand-primary">Nautanwa</span>
+            </div>
+            <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
+              <span className="font-medium text-brand-primary">Barhni</span>
+            </div>
+            <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
+              <span className="font-medium text-brand-primary">Nichlaul</span>
             </div>
             <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
               <span className="font-medium text-brand-primary">Basti</span>
