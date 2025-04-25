@@ -33,21 +33,26 @@ const Contact = () => {
     });
     
     try {
-      // Create URLSearchParams object from form data
+      // Create FormData object for sending the form
       const formBody = new URLSearchParams();
       Object.entries(formData).forEach(([key, value]) => {
         formBody.append(key, value);
       });
       
-      // Use relative URL path - this will point to your domain's contact.php file
-      // For example, if your React app is at example.com, this will post to example.com/contact.php
       const response = await fetch('https://shubhanya-backend.onrender.com/contact.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: formBody
+        body: formBody,
+        // Add these options to ensure proper error handling
+        mode: 'cors',
+        credentials: 'same-origin'
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
       
       // Parse the JSON response
       const result = await response.json();
@@ -62,7 +67,7 @@ const Contact = () => {
         });
         setFormData({ name: "", email: "", phone: "", message: "" });
       } else {
-        // Show error message
+        // Show error message from server
         setStatus({
           message: result.message || "There was an error submitting the form. Please try again.",
           isError: true,
