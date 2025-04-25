@@ -413,7 +413,7 @@ const About = () => {
               <span className="font-medium text-brand-primary">Basti</span>
             </div>
             <div className="bg-blue-50 p-3 rounded text-center border border-brand-accent2">
-              <span className="font-medium text-brand-primary">Kushinagar</span>
+              <span className="font-medium text-brand-primary">And Many More</span>
             </div>
           </div>
           <p className="text-brand-accent1 mt-4">
