@@ -334,13 +334,13 @@ const About = () => {
         </section>
 
         {/* Our Journey Timeline */}
-        <section className="mb-16">
+{/*         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-brand-primary text-center">Our Journey</h2>
           <div className="relative">
-            {/* Timeline Line */}
+            
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-blue-200"></div>
             
-            {/* Timeline Items */}
+            
             <div className="space-y-12">
               {milestones.map((milestone, index) => (
                 <div key={index} className={`relative flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
@@ -357,7 +357,7 @@ const About = () => {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Our Partners */}
         <section className="mb-16">
