@@ -103,40 +103,41 @@ const Profile = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  
+  if (!validateForm()) {
+    return;
+  }
+  
+  try {
+    setSaving(true);
+    const response = await axios.post("https://shubhanya-backend.onrender.com/profile.php", {
+      mode: "update",
+      user_id: userId,
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      // Not sending email field since it's not editable for regular users
+      password: formData.password || null, // Only send password if provided
+    });
     
-    if (!validateForm()) {
-      return;
+    if (response.data.success) {
+      showNotification(response.data.message, "success");
+      // Clear password fields after successful update
+      setFormData(prev => ({
+        ...prev,
+        password: "",
+        confirm_password: ""
+      }));
+    } else {
+      showNotification(response.data.message, "error");
     }
-    
-    try {
-      setSaving(true);
-      const response = await axios.post("https://shubhanya-backend.onrender.com/profile.php", {
-        mode: "update",
-        user_id: userId,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        password: formData.password || null, // Only send password if provided
-      });
-      
-      if (response.data.success) {
-        showNotification(response.data.message, "success");
-        // Clear password fields after successful update
-        setFormData(prev => ({
-          ...prev,
-          password: "",
-          confirm_password: ""
-        }));
-      } else {
-        showNotification(response.data.message, "error");
-      }
-    } catch (error) {
-      showNotification("Failed to update profile", "error");
-      console.error("Error updating profile:", error);
-    } finally {
-      setSaving(false);
-    }
-  };
+  } catch (error) {
+    showNotification("Failed to update profile", "error");
+    console.error("Error updating profile:", error);
+  } finally {
+    setSaving(false);
+  }
+};
 
   return (
     <>
