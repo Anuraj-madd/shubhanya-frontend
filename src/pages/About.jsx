@@ -47,7 +47,10 @@ const About = () => {
     { name: "Hikvision", role: "Surveillance Systems" },
     { name: "SyroTech", role: "FTTH Solutions" },
     { name: "Tp-Link", role: "Networking Equipment" },
-    { name: "CP Plus", role: "Surveillance Systems" }
+    { name: "CP Plus", role: "Surveillance Systems" },
+    { name: "Mikrotik", role: "Routing & RF Solutions" },
+    { name: "Anchor", role: "Networking Equipment" },
+    { name: "Ubiquity", role: "Wireless Equipments" }
   ];
 
   return (
