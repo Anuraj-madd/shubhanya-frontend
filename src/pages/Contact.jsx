@@ -107,52 +107,32 @@ const Contact = () => {
     { name: "LinkedIn", icon: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" }
   ];
 
-  // FAQs
-  const faqs = [
-    {
-      question: "What areas do you provide your services in?",
-      answer: "We currently provide our comprehensive services across major parts of Uttar Pradesh East, including Maharajganj, Siddharthnagar, Gorakhpur, Nautanwa, Barhni, Nichlaul, Basti, and many more locations. Through our partnerships, we can provide Static IP services nationwide across India."
-    },
-    {
-      question: "How can I request a service quote?",
-      answer: "You can request a service quote by filling out our contact form with your requirements, calling us directly at +91 - 99359 70521, or emailing us at support@shubhanya.in. Our team will get back to you with a detailed quote within 24-48 hours."
-    },
-    {
-      question: "What support services do you offer after installation?",
-      answer: "We provide comprehensive post-installation support including technical assistance, maintenance services, troubleshooting, and system upgrades. Our support team is available during business hours to address any concerns or issues you may encounter."
-    },
-    {
-      question: "What payment methods do you accept?",
-      answer: "We accept various payment methods including online transfers, UPI payments, debit/credit cards, and cash on delivery for product purchases. For service installations, we typically require a partial advance payment with the remainder due upon completion."
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-brand-background text-brand-text-dark">
       <Navbar />
       
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-blue-700 to-blue-900 py-16">
+      <div className="relative bg-gradient-to-r from-blue-700 to-blue-900 py-12 md:py-16">
         <div className="absolute inset-0 opacity-20">
           <svg className="h-full w-full" viewBox="0 0 500 500" preserveAspectRatio="none">
             <path d="M259.5,84.5Q257,169,186,233.5Q115,298,67.5,399Q20,500,126.5,486.5Q233,473,301.5,427Q370,381,356.5,304Q343,227,356.5,163.5Q370,100,315,42Q260,-16,259.5,84.5Z" fill="white" />
           </svg>
         </div>
-        <div className="max-w-6xl mx-auto px-4 relative text-center">
-          <h1 className="text-5xl font-bold text-white mb-4">Contact Us</h1>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative text-center">
+          <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 md:mb-4">Contact Us</h1>
+          <p className="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto">
             Have questions or need assistance? We're here to help you with any inquiries about our technology solutions.
           </p>
         </div>
       </div>
       
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-16">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {/* Contact Information Column */}
           <div className="md:col-span-1 space-y-6">
             {/* Contact Information Card */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-brand-accent2">
-              <h2 className="text-2xl font-bold text-brand-primary relative mb-6">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md border border-brand-accent2">
+              <h2 className="text-xl md:text-2xl font-bold text-brand-primary relative mb-4 md:mb-6">
                 Contact Information
                 <span className="block w-16 h-1 bg-brand-secondary mt-2"></span>
               </h2>
@@ -200,8 +180,8 @@ const Contact = () => {
             </div>
             
             {/* Social Media Links */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-brand-accent2">
-              <h2 className="text-2xl font-bold text-brand-primary relative mb-6">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md border border-brand-accent2">
+              <h2 className="text-xl md:text-2xl font-bold text-brand-primary relative mb-4 md:mb-6">
                 Connect With Us
                 <span className="block w-16 h-1 bg-brand-secondary mt-2"></span>
               </h2>
@@ -223,8 +203,8 @@ const Contact = () => {
             </div>
             
             {/* Business Hours */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-brand-accent2">
-              <h2 className="text-2xl font-bold text-brand-primary relative mb-6">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md border border-brand-accent2">
+              <h2 className="text-xl md:text-2xl font-bold text-brand-primary relative mb-4 md:mb-6">
                 Business Hours
                 <span className="block w-16 h-1 bg-brand-secondary mt-2"></span>
               </h2>
@@ -249,8 +229,8 @@ const Contact = () => {
           {/* Contact Form and Map Column */}
           <div className="md:col-span-2 space-y-6">
             {/* Contact Form */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-brand-accent2">
-              <h2 className="text-2xl font-bold text-brand-primary relative mb-6">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md border border-brand-accent2">
+              <h2 className="text-xl md:text-2xl font-bold text-brand-primary relative mb-4 md:mb-6">
                 Send Us a Message
                 <span className="block w-16 h-1 bg-brand-secondary mt-2"></span>
               </h2>
@@ -371,13 +351,13 @@ const Contact = () => {
                   </button>
                 </form>
               ) : (
-                <div className="text-center py-12">
+                <div className="text-center py-8 md:py-12">
                   <div className="bg-green-100 rounded-full mx-auto w-16 h-16 flex items-center justify-center mb-4">
                     <svg className="h-8 w-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-brand-primary mb-2">Thank You!</h3>
+                  <h3 className="text-xl md:text-2xl font-bold text-brand-primary mb-2">Thank You!</h3>
                   <p className="text-brand-accent1 mb-6">Your message has been sent successfully. We'll get back to you soon.</p>
                   <button 
                     onClick={() => setStatus({message: "", isError: false, isSubmitting: false, isSubmitted: false})}
@@ -390,8 +370,8 @@ const Contact = () => {
             </div>
             
             {/* Map */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-brand-accent2">
-              <h2 className="text-2xl font-bold text-brand-primary relative mb-6">
+            <div className="bg-white p-5 md:p-6 rounded-lg shadow-md border border-brand-accent2">
+              <h2 className="text-xl md:text-2xl font-bold text-brand-primary relative mb-4 md:mb-6">
                 Visit Our Location
                 <span className="block w-16 h-1 bg-brand-secondary mt-2"></span>
               </h2>
@@ -400,48 +380,31 @@ const Contact = () => {
                 title="Location Map"
                 src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3430.0762922915487!2d83.757495!3d27.147868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjfCsDA4JzUyLjMiTiA4M8KwNDUnMjcuMCJF!5e1!3m2!1sen!2sin!4v1745261122888!5m2!1sen!2sin"
                 width="100%"
-                height="400"
+                height="350"
                 allowFullScreen=""
                 loading="lazy"
                 className="rounded-md border border-gray-200"
               ></iframe>
             </div>
-            
-            {/* FAQs */}
-{/*             <div className="bg-white p-6 rounded-lg shadow-md border border-brand-accent2">
-              <h2 className="text-2xl font-bold text-brand-primary relative mb-6">
-                Frequently Asked Questions
-                <span className="block w-16 h-1 bg-brand-secondary mt-2"></span>
-              </h2>
-              
-              <div className="space-y-4">
-                {faqs.map((faq, index) => (
-                  <div key={index} className="border-b border-gray-200 pb-4 last:border-0 last:pb-0">
-                    <h3 className="font-semibold text-brand-primary mb-2">{faq.question}</h3>
-                    <p className="text-brand-accent1">{faq.answer}</p>
-                  </div>
-                ))} */}
-              </div>
-            </div>
           </div>
         </div>
         
         {/* Call To Action */}
-        <div className="mt-10 bg-gradient-to-r from-blue-700 to-blue-900 p-8 rounded-lg shadow-md text-white text-center">
-          <h2 className="text-2xl font-bold mb-4">Ready to Work With Us?</h2>
-          <p className="mb-6">
+        <div className="mt-8 md:mt-10 bg-gradient-to-r from-blue-700 to-blue-900 p-6 md:p-8 rounded-lg shadow-md text-white text-center">
+          <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Ready to Work With Us?</h2>
+          <p className="mb-5 md:mb-6">
             Contact us today for a consultation and let our experts design a customized solution for your needs.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
             <a 
               href="/services" 
-              className="bg-white text-blue-700 hover:bg-blue-100 px-6 py-2 rounded-md font-medium transition"
+              className="bg-white text-blue-700 hover:bg-blue-100 px-5 md:px-6 py-2 rounded-md font-medium transition"
             >
               Explore Our Services
             </a>
             <a 
               href="/shop" 
-              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 px-6 py-2 rounded-md font-medium transition"
+              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 px-5 md:px-6 py-2 rounded-md font-medium transition"
             >
               Visit Our Shop
             </a>
