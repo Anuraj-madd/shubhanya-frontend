@@ -420,11 +420,11 @@ const Contact = () => {
                     <h3 className="font-semibold text-brand-primary mb-2">{faq.question}</h3>
                     <p className="text-brand-accent1">{faq.answer}</p>
                   </div>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
         
         {/* Call To Action */}
         <div className="mt-10 bg-gradient-to-r from-blue-700 to-blue-900 p-8 rounded-lg shadow-md text-white text-center">
