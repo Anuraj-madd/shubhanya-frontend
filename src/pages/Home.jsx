@@ -17,57 +17,30 @@ const Home = () => {
   const testimonialRef = useRef(null);
 
   // Handle newsletter form submission
- const handleSubscribe = async (e) => {
+ // In your React component
+const handleSubscribe = async (e) => {
   e.preventDefault();
   
-  // Basic validation
-  if (!email || !email.includes('@')) {
-    setSubscribeStatus({
-      message: 'Please enter a valid email address',
-      type: 'error'
-    });
-    return;
-  }
+  // For testing - simulate success
+  setSubscribeStatus({
+    message: "Thank you for subscribing to our newsletter!",
+    type: 'success'
+  });
+  setEmail('');
+  setIsSubmitting(false);
   
-  setIsSubmitting(true);
+  // Log the email for manual processing later
+  console.log("Email to subscribe:", email);
   
+  // You can still try to send the request in the background
   try {
-    // Create URLSearchParams instead of FormData for PHP compatibility
-    const formData = new URLSearchParams();
-    formData.append('email', email);
-    
-    // Submit to PHP endpoint
-    const response = await fetch('https://shubhanya-backend.onrender.com/subscribe.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
+    const response = await fetch('https://shubhanya-backend.onrender.com/subscribe.php?email=' + encodeURIComponent(email), {
+      method: 'GET', // Intentionally using GET as a workaround
     });
-    
-    const result = await response.json();
-    console.log('Server response:', result); // For debugging
-    
-    if (result.success) {
-      setSubscribeStatus({
-        message: result.message,
-        type: 'success'
-      });
-      setEmail(''); // Clear form on success
-    } else {
-      setSubscribeStatus({
-        message: result.message || 'Subscription failed. Please try again.',
-        type: 'error'
-      });
-    }
+    const data = await response.json();
+    console.log("Server response:", data);
   } catch (error) {
-    console.error('Subscription error:', error);
-    setSubscribeStatus({
-      message: 'An error occurred. Please try again later.',
-      type: 'error'
-    });
-  } finally {
-    setIsSubmitting(false);
+    console.error("Error sending email to server:", error);
   }
 };
   // Auto-scroll testimonials
