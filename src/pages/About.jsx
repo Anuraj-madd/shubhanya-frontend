@@ -379,8 +379,8 @@ const About = () => {
                     <img 
                       src={`/assets/partners/${partner.name.toLowerCase().replace(/\s+/g, '-')}.png`} 
                       alt={`${partner.name} logo`}
-                      width={150}
-                      height={150}
+                      width={100}
+                      height={100}
                       className="max-h-full max-w-full object-contain"
                     />
                   </div>
