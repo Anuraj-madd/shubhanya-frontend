@@ -23,7 +23,7 @@ const PostAnnouncements = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/post_announcement.php", {
+      const response = await fetch("https://shubhanya-backend.onrender.com/post_announcement.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
