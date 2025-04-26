@@ -20,6 +20,29 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
+// Add this to CartContext.jsx's CartProvider
+useEffect(() => {
+  const checkUserAuth = () => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser?.id) {
+      setUserId(storedUser.id);
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  // Check immediately on mount
+  checkUserAuth();
+  
+  // Also set up an event listener for localStorage changes
+  window.addEventListener('storage', checkUserAuth);
+  
+  return () => {
+    window.removeEventListener('storage', checkUserAuth);
+  };
+}, []);
+  
   const fetchCart = useCallback(() => {
     if (userId) {
       const dataToSend = {
