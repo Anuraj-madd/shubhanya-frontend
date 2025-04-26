@@ -49,7 +49,7 @@ const About = () => {
     { name: "Tp-Link", role: "Networking Equipment" },
     { name: "CP Plus", role: "Surveillance Systems" },
     { name: "Mikrotik", role: "Routing & RF Solutions" },
-    { name: "Anchor", role: "Networking Equipment" },
+    { name: "Anchor", role: "Electrical Solutions" },
     { name: "Ubiquiti", role: "Wireless Equipments" }
   ];
 
