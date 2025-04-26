@@ -84,58 +84,74 @@ useEffect(() => {
   }, [fetchCart, userId]);
 
   const addToCart = async (product) => {
-    if (!isLoggedIn) {
-      // Store current location to return after login
-      sessionStorage.setItem('returnUrl', window.location.pathname);
-      return false; // Return false to indicate login required
-    }
+  // Get latest user state directly from localStorage
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  
+  if (!isLoggedIn && !storedUser?.id) {
+    // Store current location to return after login
+    sessionStorage.setItem('returnUrl', window.location.pathname);
+    return false; // Return false to indicate login required
+  }
+  
+  // Use the userId from state, or from localStorage as fallback
+  const currentUserId = userId || storedUser?.id;
+  
+  if (!currentUserId) {
+    console.error("No user ID available for cart operation");
+    return false;
+  }
+  
+  try {
+    console.log("Adding product to cart:", product);
     
-    try {
-      console.log("Adding product to cart:", product);
-      
-      // Make sure we're sending the correct product_id
-      // product could be either from ProductListing or directly from the Cart
-      const productId = product.product_id || product.id;
-      
-      if (!productId) {
-        console.error("Invalid product ID:", product);
-        return;
-      }
-      
-      const dataToSend = {
-        mode: "add",
-        user_id: parseInt(userId),
-        product_id: parseInt(productId),
-        quantity: 1,
-      };
-
-      console.log("Request Data for addToCart:", dataToSend);
-
-      const response = await axios.post(
-        "https://shubhanya-backend.onrender.com/cart.php",
-        dataToSend,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      
-      console.log("Add to cart response:", response.data);
-      
-      if (response.data.status === "success") {
-        fetchCart(); // Refresh cart after adding
-        return true; // Return true to indicate success
-      } else {
-        console.error("Failed to add to cart:", response.data.message);
-        return false;
-      }
-    } catch (err) {
-      console.error("Error adding to cart:", err);
-      console.error("Error details:", err.response?.data || err.message);
+    // Make sure we're sending the correct product_id
+    const productId = product.product_id || product.id;
+    
+    if (!productId) {
+      console.error("Invalid product ID:", product);
       return false;
     }
-  };
+    
+    const dataToSend = {
+      mode: "add",
+      user_id: parseInt(currentUserId),
+      product_id: parseInt(productId),
+      quantity: 1,
+    };
+
+    console.log("Request Data for addToCart:", dataToSend);
+
+    const response = await axios.post(
+      "https://shubhanya-backend.onrender.com/cart.php",
+      dataToSend,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    
+    console.log("Add to cart response:", response.data);
+    
+    if (response.data.status === "success") {
+      // Update local state if we weren't using the right ID
+      if (!userId && storedUser?.id) {
+        setUserId(storedUser.id);
+        setIsLoggedIn(true);
+      }
+      
+      fetchCart(); // Refresh cart after adding
+      return true; // Return true to indicate success
+    } else {
+      console.error("Failed to add to cart:", response.data.message);
+      return false;
+    }
+  } catch (err) {
+    console.error("Error adding to cart:", err);
+    console.error("Error details:", err.response?.data || err.message);
+    return false;
+  }
+};
 
   const updateQuantity = async (productId, quantity) => {
     try {
