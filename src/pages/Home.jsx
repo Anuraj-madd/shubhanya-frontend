@@ -32,67 +32,67 @@ const Home = () => {
   setIsSubmitting(true);
   
   try {
-    // Use XMLHttpRequest instead of fetch for troubleshooting
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://shubhanya-backend.onrender.com/subscribe.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // Create URLSearchParams instead of FormData for PHP compatibility
+    const formData = new URLSearchParams();
+    formData.append('email', email);
     
-    xhr.onload = function() {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          const result = JSON.parse(xhr.responseText);
-          console.log('Server response:', result);
-          
-          if (result.success) {
-            setSubscribeStatus({
-              message: result.message,
-              type: 'success'
-            });
-            setEmail(''); // Clear form on success
-          } else {
-            setSubscribeStatus({
-              message: result.message || 'Subscription failed. Please try again.',
-              type: 'error'
-            });
-          }
-        } catch (error) {
-          console.error('Error parsing response:', error);
-          setSubscribeStatus({
-            message: 'Error processing server response.',
-            type: 'error'
-          });
-        }
-      } else {
-        console.error('Request failed with status:', xhr.status);
-        setSubscribeStatus({
-          message: 'Server error. Please try again later.',
-          type: 'error'
-        });
-      }
-      setIsSubmitting(false);
-    };
+    // Submit to PHP endpoint
+    const response = await fetch('https://shubhanya-backend.onrender.com/subscribe.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData.toString(),
+    });
     
-    xhr.onerror = function() {
-      console.error('Request failed');
+    const result = await response.json();
+    console.log('Server response:', result); // For debugging
+    
+    if (result.success) {
       setSubscribeStatus({
-        message: 'Connection error. Please try again later.',
+        message: result.message,
+        type: 'success'
+      });
+      setEmail(''); // Clear form on success
+    } else {
+      setSubscribeStatus({
+        message: result.message || 'Subscription failed. Please try again.',
         type: 'error'
       });
-      setIsSubmitting(false);
-    };
-    
-    // Send the request
-    xhr.send('email=' + encodeURIComponent(email));
-    
+    }
   } catch (error) {
     console.error('Subscription error:', error);
     setSubscribeStatus({
       message: 'An error occurred. Please try again later.',
       type: 'error'
     });
+  } finally {
     setIsSubmitting(false);
   }
 };
+  // Auto-scroll testimonials
+  useEffect(() => {
+    const scrollContainer = testimonialRef.current;
+    if (!scrollContainer) return;
+
+    let scrollInterval;
+    let scrollAmount = 1; // Pixels to scroll per interval
+    const totalWidth = scrollContainer.scrollWidth;
+    const visibleWidth = scrollContainer.clientWidth;
+
+    const startScrolling = () => {
+      scrollInterval = setInterval(() => {
+        if (isPaused) return;
+
+        // Reset scroll position when we reach the end
+        if (scrollContainer.scrollLeft + visibleWidth >= totalWidth) {
+          scrollContainer.scrollLeft = 0;
+        } else {
+          scrollContainer.scrollLeft += scrollAmount;
+        }
+      }, 30); // Adjust interval for smoother/slower scrolling
+    };
+
     // Start scrolling after a brief delay
     const timeoutId = setTimeout(startScrolling, 2000);
 
@@ -573,53 +573,49 @@ const Home = () => {
       </section>
 
       {/* Newsletter Signup */}
-<section className="bg-gray-100 py-16 px-4">
-  <div className="max-w-3xl mx-auto text-center">
-    <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
-    <p className="text-lg text-gray-600 mb-8">
-      Subscribe to our newsletter for latest product updates, tech news, and exclusive offers
-    </p>
-    <form 
-      onSubmit={handleSubscribe} 
-      className="flex flex-col sm:flex-row justify-center gap-4"
-      method="POST" // Explicitly set the method
-    >
-      <input
-        type="email"
-        name="email" // Add name attribute
-        placeholder="Your Email Address"
-        className="flex-grow px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <button
-        type="submit"
-        className={`bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition ${
-          isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-        }`}
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-      </button>
-    </form>
-    
-    {/* Status message */}
-    {subscribeStatus.message && (
-      <div className={`mt-4 p-3 rounded-md ${
-        subscribeStatus.type === 'success' 
-          ? 'bg-green-100 text-green-800' 
-          : 'bg-red-100 text-red-800'
-      }`}>
-        {subscribeStatus.message}
-      </div>
-    )}
-    
-    <p className="text-sm text-gray-500 mt-4">
-      We respect your privacy and will never share your information
-    </p>
-  </div>
-</section>
+      <section className="bg-gray-100 py-16 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+          <p className="text-lg text-gray-600 mb-8">
+            Subscribe to our newsletter for latest product updates, tech news, and exclusive offers
+          </p>
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row justify-center gap-4">
+            <input
+              type="email"
+              placeholder="Your Email Address"
+              className="flex-grow px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className={`bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition ${
+                isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+              }`}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+            </button>
+          </form>
+          
+          {/* Status message */}
+          {subscribeStatus.message && (
+            <div className={`mt-4 p-3 rounded-md ${
+              subscribeStatus.type === 'success' 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-red-100 text-red-800'
+            }`}>
+              {subscribeStatus.message}
+            </div>
+          )}
+          
+          <p className="text-sm text-gray-500 mt-4">
+            We respect your privacy and will never share your information
+          </p>
+        </div>
+      </section>
+
       {/* Add custom CSS to hide scrollbar */}
       <style jsx global>{`
         .hide-scrollbar::-webkit-scrollbar {
