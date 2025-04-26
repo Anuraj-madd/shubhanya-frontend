@@ -50,7 +50,7 @@ const About = () => {
     { name: "CP Plus", role: "Surveillance Systems" },
     { name: "Mikrotik", role: "Routing & RF Solutions" },
     { name: "Anchor", role: "Networking Equipment" },
-    { name: "Ubiquity", role: "Wireless Equipments" }
+    { name: "Ubiquiti", role: "Wireless Equipments" }
   ];
 
   return (
