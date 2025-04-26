@@ -17,54 +17,61 @@ const Home = () => {
   const testimonialRef = useRef(null);
 
   // Handle newsletter form submission
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
+ const handleSubscribe = async (e) => {
+  e.preventDefault();
+  
+  // Basic validation
+  if (!email || !email.includes('@')) {
+    setSubscribeStatus({
+      message: 'Please enter a valid email address',
+      type: 'error'
+    });
+    return;
+  }
+  
+  setIsSubmitting(true);
+  
+  try {
+    // Create form data for PHP
+    const formData = new FormData();
+    formData.append('email', email);
     
-    // Basic validation
-    if (!email || !email.includes('@')) {
-      setSubscribeStatus({
-        message: 'Please enter a valid email address',
-        type: 'error'
-      });
-      return;
+    // Submit to PHP endpoint
+    const response = await fetch('https://shubhanya-backend.onrender.com/subscribe.php', {
+      method: 'POST',
+      body: formData,
+      // No need to set Content-Type header when using FormData
+    });
+    
+    // Check if the request was successful
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    setIsSubmitting(true);
+    const result = await response.json();
     
-    try {
-      // Create form data for PHP
-      const formData = new FormData();
-      formData.append('email', email);
-      
-      // Submit to PHP endpoint
-      const response = await fetch('https://shubhanya-backend.onrender.com/subscribe.php', {
-        method: 'POST',
-        body: formData
-      });
-      
-      const result = await response.json();
-      
-      if (result.success) {
-        setSubscribeStatus({
-          message: result.message,
-          type: 'success'
-        });
-        setEmail(''); // Clear form on success
-      } else {
-        setSubscribeStatus({
-          message: result.message,
-          type: 'error'
-        });
-      }
-    } catch (error) {
+    if (result.success) {
       setSubscribeStatus({
-        message: 'An error occurred. Please try again later.',
+        message: result.message,
+        type: 'success'
+      });
+      setEmail(''); // Clear form on success
+    } else {
+      setSubscribeStatus({
+        message: result.message || 'Subscription failed. Please try again.',
         type: 'error'
       });
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  } catch (error) {
+    console.error('Subscription error:', error);
+    setSubscribeStatus({
+      message: 'An error occurred. Please try again later.',
+      type: 'error'
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   // Auto-scroll testimonials
   useEffect(() => {
