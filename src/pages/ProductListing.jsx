@@ -33,20 +33,24 @@ const ProductListing = () => {
     fetchProducts();
   }, []);
 
-  useEffect(() => {
-  // If cartLoaded is true but isLoggedIn hasn't been set yet
-  // Check localStorage directly
-  if (cartLoaded && !isLoggedIn) {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser?.id) {
-      // Manually trigger a page refresh once to sync state
-      if (!sessionStorage.getItem("refreshed")) {
-        sessionStorage.setItem("refreshed", "true");
-        window.location.reload();
-      }
+ useEffect(() => {
+  // When first landing on page after login, ensure cart context is initialized
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  
+  if (storedUser?.id && !isLoggedIn && cartLoaded) {
+    // Cart is loaded but login state isn't detected yet, which indicates
+    // we need to refresh to sync the context state
+    if (!sessionStorage.getItem("initialSyncDone")) {
+      sessionStorage.setItem("initialSyncDone", "true");
+      window.location.reload();
     }
   }
-}, [cartLoaded, isLoggedIn]);
+  
+  // Clear the refresh flags when leaving the page
+  return () => {
+    sessionStorage.removeItem("cartRefreshed");
+  };
+}, [isLoggedIn, cartLoaded]);
 
 
   const filteredProducts = products
@@ -64,8 +68,8 @@ const ProductListing = () => {
     return cartItems.some((item) => parseInt(item.id) === parseInt(productId));
   };
 
-  const handleAddToCart = (product) => {
-  // Check localStorage directly as a backup
+ const handleAddToCart = async (product) => {
+  // Get latest user state directly from localStorage
   const storedUser = JSON.parse(localStorage.getItem("user"));
   
   if (!isLoggedIn && !storedUser?.id) {
@@ -73,7 +77,20 @@ const ProductListing = () => {
     return;
   }
   
-  addToCart(product);
+  const success = await addToCart(product);
+  
+  // If add to cart failed but we should be logged in, try refreshing once
+  if (!success && storedUser?.id && !sessionStorage.getItem("cartRefreshed")) {
+    sessionStorage.setItem("cartRefreshed", "true");
+    window.location.reload();
+    return;
+  }
+  
+  // If successful, give visual feedback (optional)
+  if (success) {
+    // You could show a toast/notification here that item was added
+    console.log("Product added to cart successfully");
+  }
 };
 
   const handleProductAction = (product, inCart) => {
