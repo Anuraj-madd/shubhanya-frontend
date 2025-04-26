@@ -403,10 +403,10 @@ const Contact = () => {
               Explore Our Services
             </a>
             <a 
-              href="/shop" 
+              href="/products" 
               className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 px-5 md:px-6 py-2 rounded-md font-medium transition"
             >
-              Visit Our Shop
+              Visit Our Store
             </a>
           </div>
         </div>
