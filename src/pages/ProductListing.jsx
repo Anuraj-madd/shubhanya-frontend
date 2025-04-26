@@ -33,6 +33,22 @@ const ProductListing = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+  // If cartLoaded is true but isLoggedIn hasn't been set yet
+  // Check localStorage directly
+  if (cartLoaded && !isLoggedIn) {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser?.id) {
+      // Manually trigger a page refresh once to sync state
+      if (!sessionStorage.getItem("refreshed")) {
+        sessionStorage.setItem("refreshed", "true");
+        window.location.reload();
+      }
+    }
+  }
+}, [cartLoaded, isLoggedIn]);
+
+
   const filteredProducts = products
     .filter((product) =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -49,12 +65,16 @@ const ProductListing = () => {
   };
 
   const handleAddToCart = (product) => {
-    if (!isLoggedIn) {
-      navigate("/login", { state: { from: "/products", productId: product.id } });
-      return;
-    }
-    addToCart(product);
-  };
+  // Check localStorage directly as a backup
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  
+  if (!isLoggedIn && !storedUser?.id) {
+    navigate("/login", { state: { from: "/products", productId: product.id } });
+    return;
+  }
+  
+  addToCart(product);
+};
 
   const handleProductAction = (product, inCart) => {
     if (inCart) {
