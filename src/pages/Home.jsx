@@ -32,40 +32,64 @@ const Home = () => {
   setIsSubmitting(true);
   
   try {
-    // Use fetch with explicit POST method and proper content type
-    const response = await fetch('https://shubhanya-backend.onrender.com/subscribe.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `email=${encodeURIComponent(email)}`,
-    });
+    // Use XMLHttpRequest instead of fetch for troubleshooting
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://shubhanya-backend.onrender.com/subscribe.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     
-    // For debugging: Log the response status
-    console.log('Response status:', response.status);
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          const result = JSON.parse(xhr.responseText);
+          console.log('Server response:', result);
+          
+          if (result.success) {
+            setSubscribeStatus({
+              message: result.message,
+              type: 'success'
+            });
+            setEmail(''); // Clear form on success
+          } else {
+            setSubscribeStatus({
+              message: result.message || 'Subscription failed. Please try again.',
+              type: 'error'
+            });
+          }
+        } catch (error) {
+          console.error('Error parsing response:', error);
+          setSubscribeStatus({
+            message: 'Error processing server response.',
+            type: 'error'
+          });
+        }
+      } else {
+        console.error('Request failed with status:', xhr.status);
+        setSubscribeStatus({
+          message: 'Server error. Please try again later.',
+          type: 'error'
+        });
+      }
+      setIsSubmitting(false);
+    };
     
-    const result = await response.json();
-    console.log('Server response:', result);
-    
-    if (result.success) {
+    xhr.onerror = function() {
+      console.error('Request failed');
       setSubscribeStatus({
-        message: result.message,
-        type: 'success'
-      });
-      setEmail(''); // Clear form on success
-    } else {
-      setSubscribeStatus({
-        message: result.message || 'Subscription failed. Please try again.',
+        message: 'Connection error. Please try again later.',
         type: 'error'
       });
-    }
+      setIsSubmitting(false);
+    };
+    
+    // Send the request
+    xhr.send('email=' + encodeURIComponent(email));
+    
   } catch (error) {
     console.error('Subscription error:', error);
     setSubscribeStatus({
       message: 'An error occurred. Please try again later.',
       type: 'error'
     });
-  } finally {
     setIsSubmitting(false);
   }
 };
