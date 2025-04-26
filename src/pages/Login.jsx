@@ -68,22 +68,14 @@ const Login = () => {
         localStorage.setItem("user_id", userData.id);
         
         // Determine where to redirect based on user role
-        let redirectPath;
-        
         if (userData.role === 'admin') {
           // Redirect admin users to the admin dashboard
-          redirectPath = '/admin/dashboard';
+          navigate('/admin/dashboard');
         } else {
-          // For regular users, check if we have a return URL stored in sessionStorage
-          const returnUrl = sessionStorage.getItem("returnUrl");
-          redirectPath = returnUrl || response.data.redirect || "/products";
-          
-          // Clear the return URL from sessionStorage
-          sessionStorage.removeItem("returnUrl");
+          // For regular users, always navigate to products page
+          console.log("Navigating to products page");
+          navigate("/products");
         }
-        
-        console.log("Navigating to:", redirectPath);
-        navigate(redirectPath);
       } else {
         setError(response.data.message || "Login failed. Please check your credentials.");
       }
