@@ -1,48 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useNavigate } from "react-router-dom";
 
 const PostAnnouncements = () => {
-  const navigate = useNavigate();
-  
   // States for handling the announcement form
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [announcements, setAnnouncements] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-
-  // Fetch existing announcements
-  useEffect(() => {
-    const fetchAnnouncements = async () => {
-      try {
-        const response = await fetch("/api/announcements"); // Example endpoint, adjust as needed
-        const data = await response.json();
-        setAnnouncements(data);
-      } catch (error) {
-        console.error("Error fetching announcements:", error);
-        setError("Failed to load announcements.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAnnouncements();
-  }, []);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Handle post announcement form submission
   const handlePostAnnouncement = async (e) => {
     e.preventDefault();
 
     if (!title || !content) {
-      alert("Both title and content are required!");
+      setErrorMessage("Both title and content are required!");
+      setTimeout(() => setErrorMessage(""), 3000);
       return;
     }
 
+    setLoading(true);
+
     try {
-      const response = await fetch("/api/announcements", {
+      const response = await fetch("/api/post_announcement.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,50 +31,25 @@ const PostAnnouncements = () => {
         body: JSON.stringify({ title, content }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        setSuccessMessage("Announcement posted successfully!");
+        setSuccessMessage(data.message || "Announcement posted and emails sent successfully!");
         setTitle("");
         setContent("");
-        setTimeout(() => setSuccessMessage(""), 3000); // Hide success message after 3 seconds
-        // Re-fetch announcements to include the new one
-        const newAnnouncements = await response.json();
-        setAnnouncements(newAnnouncements);
+        setTimeout(() => setSuccessMessage(""), 5000);
       } else {
-        alert("Error posting the announcement.");
+        setErrorMessage(data.error || "Error posting the announcement.");
+        setTimeout(() => setErrorMessage(""), 3000);
       }
     } catch (error) {
       console.error("Error posting announcement:", error);
-      alert("Something went wrong.");
+      setErrorMessage("Something went wrong. Please try again later.");
+      setTimeout(() => setErrorMessage(""), 3000);
+    } finally {
+      setLoading(false);
     }
   };
-
-  // Handle deleting an announcement
-  const handleDeleteAnnouncement = async (id) => {
-    if (window.confirm("Are you sure you want to delete this announcement?")) {
-      try {
-        const response = await fetch(`/api/announcements/${id}`, {
-          method: "DELETE",
-        });
-
-        if (response.ok) {
-          setAnnouncements((prev) => prev.filter((ann) => ann.id !== id));
-        } else {
-          alert("Failed to delete announcement.");
-        }
-      } catch (error) {
-        console.error("Error deleting announcement:", error);
-        alert("Something went wrong.");
-      }
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="text-center py-10">
-        <p>Loading announcements...</p>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -104,13 +60,20 @@ const PostAnnouncements = () => {
 
           {/* Success message */}
           {successMessage && (
-            <div className="mb-6 text-center text-lg font-medium text-green-600">
+            <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
               {successMessage}
             </div>
           )}
 
+          {/* Error message */}
+          {errorMessage && (
+            <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+              {errorMessage}
+            </div>
+          )}
+
           {/* Post Announcement Form */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[#778DA9] mb-10">
+          <div className="bg-white p-6 rounded-lg shadow-md border border-[#778DA9]">
             <h3 className="text-2xl font-semibold text-[#0D1B2A] mb-6">Create New Announcement</h3>
             <form onSubmit={handlePostAnnouncement}>
               <div className="mb-4">
@@ -144,35 +107,11 @@ const PostAnnouncements = () => {
               <button
                 type="submit"
                 className="bg-[#1CC5DC] text-white py-3 px-6 rounded-lg hover:bg-[#0D1B2A] transition-colors"
+                disabled={loading}
               >
-                Post Announcement
+                {loading ? "Posting..." : "Post Announcement"}
               </button>
             </form>
-          </div>
-
-          {/* List of Announcements */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-[#778DA9]">
-            <h3 className="text-2xl font-semibold text-[#0D1B2A] mb-6">Existing Announcements</h3>
-            {announcements.length > 0 ? (
-              <div>
-                {announcements.map((ann) => (
-                  <div key={ann.id} className="mb-6 border-b border-[#E6E6E6] pb-4">
-                    <h4 className="text-xl font-semibold text-[#0D1B2A]">{ann.title}</h4>
-                    <p className="text-sm text-[#415A77]">{ann.content}</p>
-                    <div className="mt-3">
-                      <button
-                        onClick={() => handleDeleteAnnouncement(ann.id)}
-                        className="text-[#E74C3C] hover:text-[#C0392B] transition-colors"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>No announcements available.</p>
-            )}
           </div>
         </div>
       </div>
