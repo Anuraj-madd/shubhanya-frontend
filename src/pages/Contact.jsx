@@ -300,7 +300,7 @@ const Contact = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="Your phone number (optional)"
+                      placeholder="Your phone number"
                       className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       disabled={status.isSubmitting}
                     />
@@ -329,7 +329,7 @@ const Contact = () => {
                       className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
                     />
                     <label htmlFor="terms" className="ml-2 block text-sm text-brand-accent1">
-                      I agree to the <a href="#" className="text-brand-secondary hover:underline">Privacy Policy</a> and <a href="#" className="text-brand-secondary hover:underline">Terms of Service</a>
+                      I agree to the <a href="/legal" className="text-brand-secondary hover:underline">Privacy Policy</a> and <a href="/legal" className="text-brand-secondary hover:underline">Terms of Service</a>
                     </label>
                   </div>
                   <button
