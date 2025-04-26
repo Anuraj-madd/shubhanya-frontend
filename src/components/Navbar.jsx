@@ -112,7 +112,7 @@ const Navbar = () => {
             <>
               <Link to="/" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Home</Link>
               <Link to="/services" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Services</Link>
-              <Link to="/products" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Productss</Link>
+              <Link to="/products" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Products</Link>
               <Link to="/about" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>About</Link>
               <Link to="/contact" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Contact</Link>
               <Link to="/cart" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Cart</Link>
