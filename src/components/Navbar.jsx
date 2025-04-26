@@ -41,7 +41,7 @@ const Navbar = () => {
             <>
               <li><Link to="/" className="hover:text-[#AAC7D8]">Home</Link></li>
               <li><Link to="/services" className="hover:text-[#AAC7D8]">Services</Link></li>
-              <li><a href="#" onClick={(e) => {e.preventDefault(); navigate("/products"); }}className="hover:text-[#AAC7D8]" > Products </a><li/>
+              <li><a href="#" onClick={(e) => {e.preventDefault(); navigate("/products"); }}className="hover:text-[#AAC7D8]" > Products </a></li>
               <li><Link to="/about" className="hover:text-[#AAC7D8]">About</Link></li>
               <li><Link to="/contact" className="hover:text-[#AAC7D8]">Contact</Link></li>
             </>
