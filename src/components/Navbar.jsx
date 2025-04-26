@@ -41,7 +41,7 @@ const Navbar = () => {
             <>
               <li><Link to="/" className="hover:text-[#AAC7D8]">Home</Link></li>
               <li><Link to="/services" className="hover:text-[#AAC7D8]">Services</Link></li>
-              <li> <a href="" onClick={(e) => {e.preventDefault(); navigate("/products"); }}className="hover:text-[#AAC7D8]" > Products </a> </li>
+              <li><Link to="/products" className="hover:text-[#AAC7D8]">Products</Link></li>
               <li><Link to="/about" className="hover:text-[#AAC7D8]">About</Link></li>
               <li><Link to="/contact" className="hover:text-[#AAC7D8]">Contact</Link></li>
             </>
@@ -112,7 +112,7 @@ const Navbar = () => {
             <>
               <Link to="/" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Home</Link>
               <Link to="/services" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Services</Link>
-              <a href="#" onClick={(e) => {e.preventDefault(); navigate("/products"); }}className="hover:text-[#AAC7D8]" > Products </a>
+              <Link to="/products" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Productss</Link>
               <Link to="/about" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>About</Link>
               <Link to="/contact" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Contact</Link>
               <Link to="/cart" className="block hover:text-[#AAC7D8]" onClick={() => setIsOpen(false)}>Cart</Link>
