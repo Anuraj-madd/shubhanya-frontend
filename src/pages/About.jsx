@@ -44,7 +44,10 @@ const About = () => {
     { name: "Airtel", role: "Broadband Provider" },
     { name: "Havells", role: "Electrical Solutions" },
     { name: "D-Link", role: "Networking Equipment" },
-    { name: "Hikvision", role: "Surveillance Systems" }
+    { name: "Hikvision", role: "Surveillance Systems" },
+    { name: "SyroTech", role: "FTTH Solutions" },
+    { name: "Tp-Link", role: "Networking Equipment" },
+    { name: "CP Plus", role: "Surveillance Systems" }
   ];
 
   return (
