@@ -32,23 +32,21 @@ const Home = () => {
   setIsSubmitting(true);
   
   try {
-    // Create form data for PHP
-    const formData = new FormData();
+    // Create URLSearchParams instead of FormData for PHP compatibility
+    const formData = new URLSearchParams();
     formData.append('email', email);
     
     // Submit to PHP endpoint
     const response = await fetch('https://shubhanya-backend.onrender.com/subscribe.php', {
       method: 'POST',
-      body: formData,
-      // No need to set Content-Type header when using FormData
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData.toString(),
     });
     
-    // Check if the request was successful
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
     const result = await response.json();
+    console.log('Server response:', result); // For debugging
     
     if (result.success) {
       setSubscribeStatus({
@@ -72,7 +70,6 @@ const Home = () => {
     setIsSubmitting(false);
   }
 };
-
   // Auto-scroll testimonials
   useEffect(() => {
     const scrollContainer = testimonialRef.current;
