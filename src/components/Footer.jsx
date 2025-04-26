@@ -50,7 +50,7 @@ const Footer = () => {
             <a href="#" className="bg-[#44576D] hover:bg-[#AAC7D8] p-2 rounded-full transition">
               <FaTwitter />
             </a>
-            <a href="#" className="bg-[#44576D] hover:bg-[#AAC7D8] p-2 rounded-full transition">
+            <a href="https://www.linkedin.com/in/shubhanya-enterprises-00704a362/" className="bg-[#44576D] hover:bg-[#AAC7D8] p-2 rounded-full transition">
               <FaLinkedinIn />
             </a>
           </div>
