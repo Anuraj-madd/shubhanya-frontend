@@ -32,21 +32,20 @@ const Home = () => {
   setIsSubmitting(true);
   
   try {
-    // Create URLSearchParams instead of FormData for PHP compatibility
-    const formData = new URLSearchParams();
-    formData.append('email', email);
-    
-    // Submit to PHP endpoint
+    // Use fetch with explicit POST method and proper content type
     const response = await fetch('https://shubhanya-backend.onrender.com/subscribe.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: formData.toString(),
+      body: `email=${encodeURIComponent(email)}`,
     });
     
+    // For debugging: Log the response status
+    console.log('Response status:', response.status);
+    
     const result = await response.json();
-    console.log('Server response:', result); // For debugging
+    console.log('Server response:', result);
     
     if (result.success) {
       setSubscribeStatus({
@@ -70,29 +69,6 @@ const Home = () => {
     setIsSubmitting(false);
   }
 };
-  // Auto-scroll testimonials
-  useEffect(() => {
-    const scrollContainer = testimonialRef.current;
-    if (!scrollContainer) return;
-
-    let scrollInterval;
-    let scrollAmount = 1; // Pixels to scroll per interval
-    const totalWidth = scrollContainer.scrollWidth;
-    const visibleWidth = scrollContainer.clientWidth;
-
-    const startScrolling = () => {
-      scrollInterval = setInterval(() => {
-        if (isPaused) return;
-
-        // Reset scroll position when we reach the end
-        if (scrollContainer.scrollLeft + visibleWidth >= totalWidth) {
-          scrollContainer.scrollLeft = 0;
-        } else {
-          scrollContainer.scrollLeft += scrollAmount;
-        }
-      }, 30); // Adjust interval for smoother/slower scrolling
-    };
-
     // Start scrolling after a brief delay
     const timeoutId = setTimeout(startScrolling, 2000);
 
