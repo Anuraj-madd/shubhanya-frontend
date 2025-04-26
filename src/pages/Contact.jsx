@@ -408,7 +408,7 @@ const Contact = () => {
             </div>
             
             {/* FAQs */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-brand-accent2">
+{/*             <div className="bg-white p-6 rounded-lg shadow-md border border-brand-accent2">
               <h2 className="text-2xl font-bold text-brand-primary relative mb-6">
                 Frequently Asked Questions
                 <span className="block w-16 h-1 bg-brand-secondary mt-2"></span>
@@ -424,7 +424,7 @@ const Contact = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         
         {/* Call To Action */}
         <div className="mt-10 bg-gradient-to-r from-blue-700 to-blue-900 p-8 rounded-lg shadow-md text-white text-center">
