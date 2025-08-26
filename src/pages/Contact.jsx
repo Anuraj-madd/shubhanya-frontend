@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEO from '../components/SEO';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -109,6 +110,14 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-brand-background text-brand-text-dark">
+      <SEO 
+        title="Contact Us - Shubhanya Enterprises | Get in Touch for Technology Solutions"
+        description="Contact Shubhanya Enterprises for networking, surveillance, solar power, and internet services. Located in Uttar Pradesh East. Call +91-99359 70521 or email support@shubhanya.in"
+        keywords="shubhanya,shubhanya siswa, shubhanya enterprises siswa, Shubhanya, siswa bazar, siswa bazar shubhanya, shubhanya enterprises siswa bazar , siswa bazar shubhanya enterprises, shubhanya Siswa , shubhanya enterprises siswa, Shubhanya Enterprises, networking solutions, surveillance systems, solar power, internet services, electrical wiring, Uttar Pradesh East, technology solutions, network tower installation, static IP services, security cameras, solar installation, broadband services, electrical contractors, IT infrastructure, network cabling, wireless networks, CCTV installation, renewable energy, Havells, D-Link, Hikvision, CP Plus, Mikrotik, Ubiquiti, Netsathi Networks, Airtel, Railwire"
+        image="https://shubhanya.cybernetic.co.in/assets/cover_hero.webp"
+        url="https://shubhanya.cybernetic.co.in/contact"
+        type="website"
+      />
       <Navbar />
       
       {/* Hero Section */}

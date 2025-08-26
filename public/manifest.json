@@ -1,6 +1,7 @@
 {
   "short_name": "Shubhanya",
-  "name": "Shubhanya Enterprises",
+  "name": "Shubhanya Enterprises - Technology Solutions",
+  "description": "Leading technology solutions provider in Uttar Pradesh East. Specializing in networking, surveillance systems, solar power, internet services, and electrical wiring.",
   "icons": [
     {
       "src": "favicon.png",
@@ -18,8 +19,20 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/products",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#1e40af",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["business", "productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "/assets/cover_hero.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide"
+    }
+  ]
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 
 const Services = () => {
   // Service categories with their details
@@ -231,6 +232,14 @@ const Services = () => {
 
   return (
     <div className="bg-gray-50 text-gray-800">
+      <SEO 
+        title="Our Services - Networking, Surveillance & Solar Solutions | Shubhanya Enterprises"
+        description="Comprehensive technology services including networking solutions, surveillance systems, solar power installation, internet services, and electrical wiring. Expert solutions for businesses and homes in Uttar Pradesh East."
+        keywords="shubhanya,shubhanya siswa, shubhanya enterprises siswa, Shubhanya, siswa bazar, siswa bazar shubhanya, shubhanya enterprises siswa bazar , siswa bazar shubhanya enterprises, shubhanya Siswa , shubhanya enterprises siswa, Shubhanya Enterprises, networking solutions, surveillance systems, solar power, internet services, electrical wiring, Uttar Pradesh East, technology solutions, network tower installation, static IP services, security cameras, solar installation, broadband services, electrical contractors, IT infrastructure, network cabling, wireless networks, CCTV installation, renewable energy, Havells, D-Link, Hikvision, CP Plus, Mikrotik, Ubiquiti, Netsathi Networks, Airtel, Railwire"
+        image="https://shubhanya.cybernetic.co.in/assets/cover_hero.webp"
+        url="https://shubhanya.cybernetic.co.in/services"
+        type="website"
+      />
       {/* Navbar */}
       <Navbar />
 

@@ -4,6 +4,7 @@ import axios from "axios";
 import { User, Mail, Lock, Eye, EyeOff, AlertCircle, X } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -353,12 +354,12 @@ const Register = () => {
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 Already have an account?{" "}
-                <a
-                  href="/login"
+                <Link
+                  to="/login"
                   className="font-medium text-[#0D1B2A] hover:text-[#19b3c7]"
                 >
                   Login
-                </a>
+                </Link>
               </p>
             </div>
           </form>

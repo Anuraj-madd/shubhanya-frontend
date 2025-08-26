@@ -19,22 +19,40 @@ const AdminOrderManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [modalType, setModalType] = useState("success"); // success or error
+  const [showReturnConfirmation, setShowReturnConfirmation] = useState(false);
+  const [pendingReturn, setPendingReturn] = useState(null);
 
   const fetchOrders = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get("https://shubhanya-backend.onrender.com/adminorders.php");
-      setOrders(res.data);
+      // Ensure orders is always an array
+      setOrders(Array.isArray(res.data) ? res.data : []);
       setError(null);
     } catch (err) {
       console.error("Error fetching orders:", err);
       setError("Failed to load orders. Please try again later.");
+      setOrders([]); // Set empty array on error
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleStatusChange = async (orderId, newStatus) => {
+    // If changing to returned status, show confirmation first
+    if (newStatus === 'returned') {
+      const order = orders.find(o => o.order_id === orderId);
+      if (order.order_status === 'delivered') {
+        setPendingReturn({ orderId, newStatus });
+        setShowReturnConfirmation(true);
+        return;
+      }
+    }
+    
+    await updateOrderStatus(orderId, newStatus);
+  };
+
+  const updateOrderStatus = async (orderId, newStatus) => {
     setIsProcessing(true);
     try {
       const res = await axios.post("https://shubhanya-backend.onrender.com/adminorders.php", {
@@ -171,11 +189,49 @@ const AdminOrderManager = () => {
     </div>
   );
 
+  // Return Confirmation Modal
+  const ReturnConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+        <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+          <div className="flex items-center mb-4">
+            <div className="bg-yellow-100 p-2 rounded-full mr-3">
+              <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium">Confirm Return</h3>
+          </div>
+          <p className="text-gray-700 mb-4">
+            This order was previously delivered. Marking it as returned will add the items back to your inventory stock.
+            Are you sure you want to proceed?
+          </p>
+          <div className="flex justify-end gap-4">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={onConfirm}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+            >
+              Confirm Return
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-[#F5F7FA] text-[#1B1B1B]">
+    <div className="flex flex-col min-h-screen bg-background-light dark:bg-dark-background text-text-light dark:text-dark-text transition-colors duration-200">
       <Navbar />
       <div className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-center mb-6">Order Management</h1>
+        <h1 className="text-3xl font-bold text-center mb-6 text-text-light dark:text-dark-text">Order Management</h1>
 
         {/* Filters and summary */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -184,32 +240,33 @@ const AdminOrderManager = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by Order ID, Name or Phone"
-            className="w-full md:w-1/3 px-4 py-2 border border-[#415A77] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1CC5DC]"
+            className="w-full md:w-1/3 px-4 py-2 border border-secondary-light dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-dark-surface text-text-light dark:text-dark-text"
           />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full md:w-1/4 px-4 py-2 border border-[#415A77] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1CC5DC]"
+            className="w-full md:w-1/4 px-4 py-2 border border-secondary-light dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-dark-surface text-text-light dark:text-dark-text"
           >
             <option value="all">All Statuses</option>
             <option value="pending">Pending</option>
             <option value="processing">Processing</option>
             <option value="shipped">Shipped</option>
             <option value="delivered">Delivered</option>
+            <option value="returned">Returned</option>
             <option value="cancelled">Cancelled</option>
           </select>
 
           <div className="w-full md:w-auto flex flex-col md:flex-row items-center gap-4 text-sm">
             <div className="font-medium">
-              Total Orders: <span className="text-[#1B263B] font-semibold">{totalOrders}</span>
+              Total Orders: <span className="text-secondary-light dark:text-dark-text font-semibold">{totalOrders}</span>
             </div>
             <div className="font-medium">
               Total Revenue:{" "}
-              <span className="text-[#1CC5DC] font-semibold">₹{totalRevenue.toFixed(2)}</span>
+              <span className="text-primary dark:text-dark-accent font-semibold">₹{totalRevenue.toFixed(2)}</span>
             </div>
             <button 
               onClick={fetchOrders}
-              className="px-4 py-2 bg-[#1CC5DC] text-white rounded-lg hover:bg-[#19b3c7] transition"
+              className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg transition"
               disabled={isLoading}
             >
               {isLoading ? "Refreshing..." : "Refresh"}
@@ -219,7 +276,7 @@ const AdminOrderManager = () => {
 
         {/* Error message */}
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded mb-4">
             {error}
           </div>
         )}
@@ -229,18 +286,18 @@ const AdminOrderManager = () => {
           {isLoading ? (
             <div className="flex justify-center items-center py-20">
               <div className="text-center">
-                <div className="inline-block w-16 h-16 border-4 border-[#E0E1DD] rounded-full relative">
-                  <div className="absolute inset-0 border-t-4 border-[#1CC5DC] rounded-full animate-spin"></div>
+                <div className="inline-block w-16 h-16 border-4 border-gray-200 dark:border-dark-border rounded-full relative">
+                  <div className="absolute inset-0 border-t-4 border-primary dark:border-dark-accent rounded-full animate-spin"></div>
                 </div>
-                <p className="mt-4 text-lg font-medium text-[#1B263B]">Loading orders...</p>
+                <p className="mt-4 text-lg font-medium text-text-light dark:text-dark-text">Loading orders...</p>
               </div>
             </div>
           ) : (
             <>
               {/* Orders Table */}
               <div className="overflow-x-auto">
-                <table className="min-w-full table-auto border-separate border-spacing-0 bg-white shadow-md rounded-lg">
-                  <thead className="bg-[#1B263B] text-white">
+                <table className="min-w-full table-auto border-separate border-spacing-0 bg-white dark:bg-dark-surface shadow-md rounded-lg">
+                  <thead className="bg-secondary-light dark:bg-dark-primary text-white">
                     <tr>
                       {[ 
                         { label: "Order ID", field: "order_id" },
@@ -269,40 +326,41 @@ const AdminOrderManager = () => {
                   <tbody>
                     {currentOrders.length > 0 ? (
                       currentOrders.map((order) => (
-                        <tr key={order.id} className="text-sm hover:bg-[#f1f5f9]">
-                          <td className="px-6 py-3 border-b border-[#E0E1DD]">{order.order_id}</td>
-                          <td className="px-6 py-3 border-b border-[#E0E1DD]">
+                        <tr key={order.id} className="text-sm hover:bg-gray-50 dark:hover:bg-dark-secondary transition-colors duration-200">
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border">{order.order_id}</td>
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border">
                             <div>{order.name}</div>
                             <div className="text-xs text-gray-500">ID: {order.user_id}</div>
                           </td>
-                          <td className="px-6 py-3 border-b border-[#E0E1DD]">
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border">
                             {order.items && order.items.map((item, index) => (
                               <div key={index} className="mb-1 last:mb-0">
                                 {item.product_name} (×{item.quantity}) - ₹{parseFloat(item.price).toFixed(2)}
                               </div>
                             ))}
                           </td>
-                          <td className="px-6 py-3 border-b border-[#E0E1DD]">₹{parseFloat(order.total_amount).toFixed(2)}</td>
-                          <td className="px-6 py-3 border-b border-[#E0E1DD]">
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border">₹{parseFloat(order.total_amount).toFixed(2)}</td>
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border">
                             {order.address1}, {order.address2 && `${order.address2}, `}{order.city} - {order.pincode}
                           </td>
-                          <td className="px-6 py-3 border-b border-[#E0E1DD]">{order.phone}</td>
-                          <td className="px-6 py-3 border-b border-[#E0E1DD] capitalize">{order.payment_mode}</td>
-                          <td className="px-6 py-3 border-b border-[#E0E1DD]">
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border">{order.phone}</td>
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border capitalize">{order.payment_mode}</td>
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border">
                             <select
                               value={order.order_status}
                               onChange={(e) => handleStatusChange(order.order_id, e.target.value)}
-                              className="border border-[#415A77] text-sm rounded-lg px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#1CC5DC]"
+                              className="border border-secondary-light dark:border-dark-border text-sm rounded-lg px-4 py-2 bg-white dark:bg-dark-surface focus:outline-none focus:ring-2 focus:ring-primary text-text-light dark:text-dark-text"
                               style={{
                                 backgroundColor: 
                                   order.order_status === 'delivered' ? '#dcfce7' :
+                                  order.order_status === 'returned' ? '#fee2e2' :
                                   order.order_status === 'cancelled' ? '#fee2e2' :
                                   order.order_status === 'shipped' ? '#dbeafe' :
-                                  order.order_status === 'processing' ? '#fef9c3' : '#ffffff'
+                                  order.order_status === 'processing' ? '#fef9c3' : 'inherit'
                               }}
                               disabled={isProcessing}
                             >
-                              {["pending", "processing", "shipped", "delivered", "cancelled"].map(
+                              {["pending", "processing", "shipped", "delivered", "returned", "cancelled"].map(
                                 (status) => (
                                   <option key={status} value={status}>
                                     {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -311,14 +369,14 @@ const AdminOrderManager = () => {
                               )}
                             </select>
                           </td>
-                          <td className="px-6 py-3 border-b border-[#E0E1DD]">
+                          <td className="px-6 py-3 border-b border-gray-200 dark:border-dark-border">
                             {new Date(order.order_date).toLocaleString()}
                           </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="9" className="text-center p-4 text-[#778DA9]">
+                        <td colSpan="9" className="text-center p-4 text-gray-500 dark:text-gray-400">
                           No orders found.
                         </td>
                       </tr>
@@ -333,17 +391,17 @@ const AdminOrderManager = () => {
                   <button
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage((prev) => prev - 1)}
-                    className="px-6 py-3 bg-[#415A77] text-white rounded-lg disabled:opacity-50"
+                    className="px-6 py-3 bg-secondary-light dark:bg-dark-primary text-white rounded-lg disabled:opacity-50"
                   >
                     Previous
                   </button>
-                  <span className="text-sm">
+                  <span className="text-sm text-text-light dark:text-dark-text">
                     Page {currentPage} of {totalPages}
                   </span>
                   <button
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage((prev) => prev + 1)}
-                    className="px-6 py-3 bg-[#415A77] text-white rounded-lg disabled:opacity-50"
+                    className="px-6 py-3 bg-secondary-light dark:bg-dark-primary text-white rounded-lg disabled:opacity-50"
                   >
                     Next
                   </button>
@@ -364,6 +422,22 @@ const AdminOrderManager = () => {
         onClose={() => setShowModal(false)}
         message={modalMessage}
         type={modalType}
+      />
+
+      {/* Return confirmation modal */}
+      <ReturnConfirmationModal
+        isOpen={showReturnConfirmation}
+        onClose={() => {
+          setShowReturnConfirmation(false);
+          setPendingReturn(null);
+        }}
+        onConfirm={() => {
+          if (pendingReturn) {
+            updateOrderStatus(pendingReturn.orderId, pendingReturn.newStatus);
+            setShowReturnConfirmation(false);
+            setPendingReturn(null);
+          }
+        }}
       />
     </div>
   );

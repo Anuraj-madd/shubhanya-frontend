@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import SEO from '../components/SEO';
 
 const About = () => {
   // Company milestones for timeline
@@ -55,6 +56,14 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-brand-background text-brand-text-dark">
+      <SEO 
+        title="About Us - Shubhanya Enterprises | Leading Technology Solutions Provider"
+        description="Learn about Shubhanya Enterprises - a trusted technology solutions provider in Uttar Pradesh East. Over 10 years of expertise in networking, surveillance, solar power, and internet services."
+        keywords="shubhanya,shubhanya siswa, shubhanya enterprises siswa, Shubhanya, siswa bazar, siswa bazar shubhanya, shubhanya enterprises siswa bazar , siswa bazar shubhanya enterprises, shubhanya Siswa , shubhanya enterprises siswa, Shubhanya Enterprises, networking solutions, surveillance systems, solar power, internet services, electrical wiring, Uttar Pradesh East, technology solutions, network tower installation, static IP services, security cameras, solar installation, broadband services, electrical contractors, IT infrastructure, network cabling, wireless networks, CCTV installation, renewable energy, Havells, D-Link, Hikvision, CP Plus, Mikrotik, Ubiquiti, Netsathi Networks, Airtel, Railwire"
+        image="https://shubhanya.cybernetic.co.in/assets/cover_hero.webp"
+        url="https://shubhanya.cybernetic.co.in/about"
+        type="website"
+      />
       <Navbar />
       
       {/* Hero Section */}

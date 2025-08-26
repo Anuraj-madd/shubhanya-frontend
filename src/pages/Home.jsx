@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
 import ReviewCard from '../components/ReviewCard';
+import SEO from '../components/SEO';
 
 const Home = () => {
   // State for newsletter form
@@ -259,6 +260,14 @@ const handleSubscribe = async (e) => {
 
   return (
     <div className="bg-gray-50 text-gray-800">
+      <SEO 
+        title="Shubhanya Enterprises - Networking, Surveillance & Solar Solutions | Uttar Pradesh East"
+        description="Leading technology solutions provider in Uttar Pradesh East. Specializing in networking, surveillance systems, solar power, internet services, and electrical wiring. Trusted by businesses and homes across India."
+        keywords="shubhanya,shubhanya siswa, shubhanya enterprises siswa, Shubhanya, siswa bazar, siswa bazar shubhanya, shubhanya enterprises siswa bazar , siswa bazar shubhanya enterprises, shubhanya Siswa , shubhanya enterprises siswa, Shubhanya Enterprises, networking solutions, surveillance systems, solar power, internet services, electrical wiring, Uttar Pradesh East, technology solutions, network tower installation, static IP services, security cameras, solar installation, broadband services, electrical contractors, IT infrastructure, network cabling, wireless networks, CCTV installation, renewable energy, Havells, D-Link, Hikvision, CP Plus, Mikrotik, Ubiquiti, Netsathi Networks, Airtel, Railwire"
+        image="https://shubhanya.cybernetic.co.in/assets/cover_hero.webp"
+        url="https://shubhanya.cybernetic.co.in/"
+        type="website"
+      />
       {/* Navbar */}
       <Navbar />
 

@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import SEO from '../components/SEO';
 
 const ProductListing = () => {
   const [products, setProducts] = useState([]);
@@ -153,6 +154,14 @@ const ProductListing = () => {
 
   return (
     <>
+      <SEO 
+        title="Our Products - Networking, Surveillance & Solar Equipment | Shubhanya Enterprises"
+        description="Browse our comprehensive range of networking equipment, surveillance systems, solar power products, and electrical solutions. Quality products from trusted brands like Havells, D-Link, Hikvision, and more."
+        keywords="shubhanya,shubhanya siswa, shubhanya enterprises siswa, Shubhanya, siswa bazar, siswa bazar shubhanya, shubhanya enterprises siswa bazar , siswa bazar shubhanya enterprises, shubhanya Siswa , shubhanya enterprises siswa, Shubhanya Enterprises, networking solutions, surveillance systems, solar power, internet services, electrical wiring, Uttar Pradesh East, technology solutions, network tower installation, static IP services, security cameras, solar installation, broadband services, electrical contractors, IT infrastructure, network cabling, wireless networks, CCTV installation, renewable energy, Havells, D-Link, Hikvision, CP Plus, Mikrotik, Ubiquiti, Netsathi Networks, Airtel, Railwire"
+        image="https://shubhanya.cybernetic.co.in/assets/cover_hero.webp"
+        url="https://shubhanya.cybernetic.co.in/products"
+        type="website"
+      />
       <Navbar />
       <div className="bg-[#F5F7FA] min-h-screen p-4 md:p-6">
         <div className="max-w-7xl mx-auto">

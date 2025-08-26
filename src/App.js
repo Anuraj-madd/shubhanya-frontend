@@ -1,4 +1,5 @@
 // src/App.js
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -26,40 +27,42 @@ import SalesReports from "./pages/SalesReports";
 import PostAnnouncements from "./pages/PostAnnoucements";
 import AdminProfile from "./pages/AdminProfile";
 import OrderDetails from "./pages/OrderDetails";
+import Analytics from "./components/Analytics";
 
 function App() {
-  
   return (
     <CartProvider>
-    <Router>
-      <Routes>
-
-        <Route path="/" element={<Home />} />
-        <Route path="/Cart" element={<Cart/>}/>
-        <Route path="Checkout" element={<Checkout/>}/>
-        <Route path="/login" element={<Login />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/admin" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/products" element={<ProductListing />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/legal" element={<Legal/>}/>
-        <Route path="/admin/dashboard" element={ <RequireAdmin> <AdminDashboard /> </RequireAdmin> }/>
-        <Route path="/admin/products" element={ <RequireAdmin> <AdminProducts /> </RequireAdmin> }/>
-        <Route path="/admin/orders" element={ <RequireAdmin> <AdminOrderManager /> </RequireAdmin> }/>
-        <Route path="/admin/users" element={ <RequireAdmin> <AdminUserManager /> </RequireAdmin> }/>
-        <Route path="/admin/inventory" element={ <RequireAdmin> <InventoryManagement /> </RequireAdmin> }/>
-        <Route path="/admin/reports" element={ <RequireAdmin> <SalesReports /> </RequireAdmin> }/>
-        <Route path="/admin/announcements" element={ <RequireAdmin> <PostAnnouncements /> </RequireAdmin> }/>
-        <Route path="/admin/profile" element={ <RequireAdmin> <AdminProfile /> </RequireAdmin> }/>
-        <Route path="/admin/reports/details" element={ <RequireAdmin> <OrderDetails /> </RequireAdmin> }/>
-        <Route path="/dashboard" element={<PrivateRoute> <UserDashboard /></PrivateRoute>}/>
-        <Route path="/profile" element={<PrivateRoute> <Profile/> </PrivateRoute>}/>
-        <Route path="/Orders" element={<PrivateRoute> <Orders/> </PrivateRoute>}/>
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Analytics />
+        <div className="min-h-screen bg-background text-text">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/Cart" element={<Cart/>}/>
+            <Route path="Checkout" element={<Checkout/>}/>
+            <Route path="/login" element={<Login />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/admin" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/products" element={<ProductListing />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/legal" element={<Legal/>}/>
+            <Route path="/admin/dashboard" element={ <RequireAdmin> <AdminDashboard /> </RequireAdmin> }/>
+            <Route path="/admin/products" element={ <RequireAdmin> <AdminProducts /> </RequireAdmin> }/>
+            <Route path="/admin/orders" element={ <RequireAdmin> <AdminOrderManager /> </RequireAdmin> }/>
+            <Route path="/admin/users" element={ <RequireAdmin> <AdminUserManager /> </RequireAdmin> }/>
+            <Route path="/admin/inventory" element={ <RequireAdmin> <InventoryManagement /> </RequireAdmin> }/>
+            <Route path="/admin/reports" element={ <RequireAdmin> <SalesReports /> </RequireAdmin> }/>
+            <Route path="/admin/announcements" element={ <RequireAdmin> <PostAnnouncements /> </RequireAdmin> }/>
+            <Route path="/admin/profile" element={ <RequireAdmin> <AdminProfile /> </RequireAdmin> }/>
+            <Route path="/admin/reports/details" element={ <RequireAdmin> <OrderDetails /> </RequireAdmin> }/>
+            <Route path="/dashboard" element={<PrivateRoute> <UserDashboard /></PrivateRoute>}/>
+            <Route path="/profile" element={<PrivateRoute> <Profile/> </PrivateRoute>}/>
+            <Route path="/Orders" element={<PrivateRoute> <Orders/> </PrivateRoute>}/>
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+          </Routes>
+        </div>
+      </Router>
     </CartProvider>
   );
 }
