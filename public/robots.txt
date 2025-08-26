@@ -42,3 +42,6 @@ Allow: /assets/
 # Allow location-specific pages
 Allow: /siswa-bazar
 Allow: /maharajganj
+
+# Allow error pages
+Allow: /unauthorized

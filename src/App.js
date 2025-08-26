@@ -27,6 +27,8 @@ import SalesReports from "./pages/SalesReports";
 import PostAnnouncements from "./pages/PostAnnoucements";
 import AdminProfile from "./pages/AdminProfile";
 import OrderDetails from "./pages/OrderDetails";
+import Unauthorized from "./pages/Unauthorized";
+import NotFound from "./pages/NotFound";
 import Analytics from "./components/Analytics";
 
 function App() {
@@ -60,6 +62,8 @@ function App() {
             <Route path="/Orders" element={<PrivateRoute> <Orders/> </PrivateRoute>}/>
             <Route path="/contact" element={<Contact />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </Router>
