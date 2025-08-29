@@ -59,9 +59,20 @@ const ProductListing = () => {
       product.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .sort((a, b) => {
+      // First, move out-of-stock products to the end
+      const aStock = parseInt(a.stock) || 0;
+      const bStock = parseInt(b.stock) || 0;
+      
+      // If one is out of stock and the other isn't, out of stock goes last
+      if (aStock === 0 && bStock > 0) return 1;
+      if (bStock === 0 && aStock > 0) return -1;
+      
+      // If both have same stock status, apply the selected sort option
       if (sortOption === "lowToHigh") return a.price - b.price;
       if (sortOption === "highToLow") return b.price - a.price;
       if (sortOption === "newest") return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      
+      // Default: keep original order for products with same stock status
       return 0;
     });
 
@@ -266,7 +277,9 @@ const ProductListing = () => {
             {filteredProducts.map((product) => {
               const inCart = isInCart(product.id);
               const isOutOfStock = product.stock === "0";
-              const discount = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+              const discount = product.mrp && parseFloat(product.mrp) > parseFloat(product.price) 
+                ? Math.round(((parseFloat(product.mrp) - parseFloat(product.price)) / parseFloat(product.mrp)) * 100)
+                : 0;
               const stockStatus = getStockDisplay(product.stock);
               
               return (
@@ -317,7 +330,7 @@ const ProductListing = () => {
                       </p>
                       <div className="flex items-center mt-2">
                         <span className="font-bold text-lg text-green-600 mr-2">₹{product.price}</span>
-                        {product.mrp > product.price && (
+                        {product.mrp && parseFloat(product.mrp) > parseFloat(product.price) && (
                           <span className="line-through text-red-400 text-sm">₹{product.mrp}</span>
                         )}
                       </div>
@@ -420,11 +433,11 @@ const ProductListing = () => {
                   
                   <div className="flex items-center mb-4">
                     <span className="font-bold text-2xl text-green-600 mr-3">₹{expandedProduct.price}</span>
-                    {expandedProduct.mrp > expandedProduct.price && (
+                    {expandedProduct.mrp && parseFloat(expandedProduct.mrp) > parseFloat(expandedProduct.price) && (
                       <>
                         <span className="line-through text-red-400 text-lg mr-2">₹{expandedProduct.mrp}</span>
                         <span className="bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">
-                          {Math.round(((expandedProduct.mrp - expandedProduct.price) / expandedProduct.mrp) * 100)}% OFF
+                          {Math.round(((parseFloat(expandedProduct.mrp) - parseFloat(expandedProduct.price)) / parseFloat(expandedProduct.mrp)) * 100)}% OFF
                         </span>
                       </>
                     )}
