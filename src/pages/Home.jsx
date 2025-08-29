@@ -209,19 +209,19 @@ const handleSubscribe = async (e) => {
   // Expanded testimonials
   const testimonials = [
     {
-      name: "Anuraj Maddhesiya", 
-      company: "ABC Security Solutions",
-      review: "Shubhanya provided us with a comprehensive CCTV setup for our corporate office. The quality and support have been exceptional.", 
+      name: "Ankit Soni", 
+      company: "Home",
+      review: "Shubhanya provided us with a comprehensive CCTV setup for our Home. The quality and support have been exceptional.", 
       rating: 5
     },
     {
-      name: "Ankit Soni", 
+      name: "Shaurya Lath", 
       company: "CloudTech Systems",
       review: "Their networking equipment has transformed our infrastructure. Fast delivery and excellent installation support.", 
       rating: 5
     },
     {
-      name: "Alankriti Khandelwal", 
+      name: "CA Ritika Agarwal", 
       company: "HomeSecure",
       review: "We've been partnering with Shubhanya for our client installations. Reliable products and fantastic after-sales service.", 
       rating: 4
@@ -233,7 +233,7 @@ const handleSubscribe = async (e) => {
       rating: 5
     },
     {
-      name: "CA Ritika Agarwal",
+      name: "Alankriti Khandelwal",
       company: "TechHub Coworking",
       review: "We rely on consistent internet connectivity for our business, and Shubhanya's static IP service has been rock-solid for over a year now.",
       rating: 5
@@ -245,7 +245,7 @@ const handleSubscribe = async (e) => {
       rating: 5
     },
     {
-      name: "Shaurya Lath",
+      name: "Ujjwal Rauniyar",
       company: "Verma Electronics",
       review: "As a retailer, I've been sourcing networking equipment from Shubhanya for years. Their product quality and business ethics are unmatched.",
       rating: 4
