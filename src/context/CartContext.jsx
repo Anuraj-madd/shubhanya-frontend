@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 
 const CartContext = createContext();
@@ -9,6 +9,7 @@ export const CartProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [cartLoaded, setCartLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const quantityUpdateTimers = useRef({});
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -153,38 +154,84 @@ useEffect(() => {
   }
 };
 
-  const updateQuantity = async (productId, quantity) => {
-    try {
-      const dataToSend = {
-        mode: "update",
-        user_id: parseInt(userId),
-        product_id: parseInt(productId),
-        quantity: parseInt(quantity),
-      };
+  const updateQuantity = (productId, quantity) => {
+    const parsedQuantity = parseInt(quantity);
+    const parsedProductId = parseInt(productId);
+    const parsedUserId = parseInt(userId);
 
-      console.log("Request Data for updateQuantity:", dataToSend);
-
-      const response = await axios.post(
-        "https://shubhanya-backend.onrender.com/cart.php",
-        dataToSend,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      
-      console.log("Update quantity response:", response.data);
-      
-      if (response.data.status === "success") {
-        fetchCart(); // Refresh cart after updating
-      } else {
-        console.error("Failed to update quantity:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Update quantity error:", error);
-      console.error("Error details:", error.response?.data || error.message);
+    if (!parsedUserId || !parsedProductId || isNaN(parsedQuantity) || parsedQuantity < 1) {
+      console.warn("Invalid updateQuantity params", { parsedUserId, parsedProductId, parsedQuantity });
+      return;
     }
+
+    // 1) Optimistic UI update
+    setCartItems((prev) =>
+      (prev || []).map((item) =>
+        parseInt(item.id) === parsedProductId ? { ...item, quantity: parsedQuantity } : item
+      )
+    );
+
+    // 2) Store a short-lived record in localStorage
+    try {
+      const key = `cart_pending_updates_${parsedUserId}`;
+      const pendingRaw = localStorage.getItem(key);
+      const pending = pendingRaw ? JSON.parse(pendingRaw) : {};
+      pending[parsedProductId] = { quantity: parsedQuantity, ts: Date.now() };
+      localStorage.setItem(key, JSON.stringify(pending));
+    } catch (e) {
+      console.warn("Failed to write pending cart update to localStorage", e);
+    }
+
+    // 3) Debounce server sync (~60ms)
+    if (quantityUpdateTimers.current[parsedProductId]) {
+      clearTimeout(quantityUpdateTimers.current[parsedProductId]);
+    }
+
+    quantityUpdateTimers.current[parsedProductId] = setTimeout(async () => {
+      try {
+        const dataToSend = {
+          mode: "update",
+          user_id: parsedUserId,
+          product_id: parsedProductId,
+          quantity: parsedQuantity,
+        };
+
+        console.log("Debounced sync for updateQuantity:", dataToSend);
+
+        const response = await axios.post(
+          "https://shubhanya-backend.onrender.com/cart.php",
+          dataToSend,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Update quantity response:", response.data);
+
+        // Clean up the short-lived pending entry (it only needs to live ~60ms)
+        try {
+          const key = `cart_pending_updates_${parsedUserId}`;
+          const pendingRaw = localStorage.getItem(key);
+          const pending = pendingRaw ? JSON.parse(pendingRaw) : {};
+          delete pending[parsedProductId];
+          localStorage.setItem(key, JSON.stringify(pending));
+        } catch (e) {
+          console.warn("Failed to clear pending cart update from localStorage", e);
+        }
+
+        if (response.data.status === "success") {
+          // Optionally refresh cart to ensure server is source of truth
+          fetchCart();
+        } else {
+          console.error("Failed to update quantity:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Update quantity error:", error);
+        console.error("Error details:", error.response?.data || error.message);
+      }
+    }, 60);
   };
 
   const removeFromCart = async (productId) => {

@@ -36,6 +36,59 @@ const Cart = () => {
     }
   };
 
+  const handleQuantityInput = (id, newQuantity) => {
+    console.log("Setting quantity for product ID:", id, "to:", newQuantity);
+    const item = cartItems.find((i) => i.id === id);
+    if (!item) {
+      console.error("Item not found in cart:", id);
+      return;
+    }
+
+    // Convert to number and validate
+    const quantity = parseInt(newQuantity);
+    
+    // Allow empty input for better UX (user can type)
+    if (newQuantity === '') {
+      return;
+    }
+    
+    if (isNaN(quantity) || quantity < 1) {
+      // If invalid input, don't update yet (let blur handle it)
+      return;
+    }
+    
+    // Limit maximum quantity to prevent abuse (e.g., 999)
+    if (quantity > 999) {
+      return;
+    }
+    
+    if (quantity === 0) {
+      removeFromCart(id);
+    } else {
+      updateQuantity(id, quantity);
+    }
+  };
+
+  const handleQuantityBlur = (id, inputValue) => {
+    const item = cartItems.find((i) => i.id === id);
+    if (!item) return;
+
+    const quantity = parseInt(inputValue);
+    
+    // If input is empty or invalid, revert to current quantity
+    if (isNaN(quantity) || quantity < 1) {
+      // Force re-render by updating with current quantity
+      updateQuantity(id, item.quantity);
+    }
+  };
+
+  const handleQuantityKeyPress = (e, id) => {
+    // Handle Enter key press
+    if (e.key === 'Enter') {
+      e.target.blur(); // Trigger blur event to validate and update
+    }
+  };
+
   const handleCheckout = () => {
     navigate('/checkout');
   };
@@ -84,14 +137,27 @@ const Cart = () => {
                     <div className="flex items-center gap-2 mb-2">
                       <button
                         onClick={() => handleQuantityChange(item.id, -1)}
-                        className="px-2 py-1 bg-[#0A9396] text-white rounded hover:bg-[#005F73]"
+                        className="px-2 py-1 bg-[#0A9396] text-white rounded hover:bg-[#005F73] transition-colors duration-200"
+                        aria-label="Decrease quantity"
                       >
                         -
                       </button>
-                      <span className="px-3">{item.quantity}</span>
+                      <input
+                        type="number"
+                        min="1"
+                        max="999"
+                        value={item.quantity}
+                        onChange={(e) => handleQuantityInput(item.id, e.target.value)}
+                        onBlur={(e) => handleQuantityBlur(item.id, e.target.value)}
+                        onKeyPress={(e) => handleQuantityKeyPress(e, item.id)}
+                        className="w-16 px-2 py-1 text-center border border-[#94D2BD] rounded focus:outline-none focus:ring-2 focus:ring-[#0A9396] focus:border-transparent hover:border-[#0A9396] transition-colors duration-200 bg-white"
+                        aria-label="Quantity"
+                        title="Click to edit quantity"
+                      />
                       <button
                         onClick={() => handleQuantityChange(item.id, 1)}
-                        className="px-2 py-1 bg-[#0A9396] text-white rounded hover:bg-[#005F73]"
+                        className="px-2 py-1 bg-[#0A9396] text-white rounded hover:bg-[#005F73] transition-colors duration-200"
+                        aria-label="Increase quantity"
                       >
                         +
                       </button>
