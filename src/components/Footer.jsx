@@ -58,7 +58,7 @@ const Footer = () => {
       </div>
 
       <div className="text-center text-sm border-t border-[#44576D] pt-2">
-        &copy; {new Date().getFullYear()} Designed with ❤️ by <a href="https://cybernetic.co.in"></a>Anuraj Maddhesiya<br/> All rights reserved by <a href="https://shubhanya.cybernetic.co.in">Shubhanya Enterprises</a>
+        Designed with ❤️ by <a href="https://cybernetic.co.in">Anuraj Maddhesiya</a><br/>&copy; {new Date().getFullYear()} <a href="https://shubhanya.cybernetic.co.in">Shubhanya Enterprises</a> All rights reserved.
       </div>
     </footer>
   );
